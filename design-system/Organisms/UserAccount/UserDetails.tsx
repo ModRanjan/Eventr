@@ -1,36 +1,42 @@
 import { useState } from 'react';
-import AccountDetails from '../../Molecules/Modals/AccountDetails';
-import { Label } from '../../Atom/Label';
-import {IWalletData} from "../../../redux/reducer/data.type"
 
-type PropsType={
-  walletData:IWalletData;
-  currencySymbol:string;
-  etherscan: string;
-}
+import { Label } from '@/Atoms/Label';
+import AccountDetails from '@/Molecules/Modals/AccountDetails';
 
-export const UserDetails = ({ walletData, currencySymbol, etherscan }:PropsType) => {
+type PropsType = {
+  accountAddress: string;
+  accountBalance: string;
+  currencySymbol?: string;
+  etherscan?: string;
+};
+
+export const UserDetails = ({
+  accountAddress,
+  accountBalance,
+  currencySymbol,
+  etherscan,
+}: PropsType) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleCloseModal=()=>setIsModalOpen(false)
-  
+  const handleCloseModal = () => setIsModalOpen(false);
+
   return (
-    <div className="hidden text-sm font-semibold cursor-pointer  md:block">
+    <div className="hidden text-sm font-semibold cursor-pointer md:block">
       <div
-        className="flex rounded-lg bg-gray-200 py-0.5 "
+        className="flex rounded-md bg-gray-200 py-0.5"
         onClick={() => setIsModalOpen(true)}
       >
-        <Label className="px-3 py-1 ">
+        {/* <Label className="px-3 py-1.5">
           <span>{walletData.accountBalance.slice(0, 5)}</span>
           <span> {currencySymbol}</span>
-        </Label>
+        </Label> */}
         <Label
-          onHoverTitle={walletData.currentAccount}
-          className="px-3 py-1 bg-gray-100 rounded-r-lg "
+          onHoverTitle="Wallet Address"
+          className="mx-auto px-3 text-sm py-1.5 font-medium text-black hover:text-gray-700"
         >
-          {walletData.currentAccount.slice(0, 5) +
-            '...' +
-            walletData.currentAccount.slice(38, 42)}
+          {accountAddress.slice(0, 5) + '...' + accountAddress.slice(13)}
+
+          {/* walletData.currentAccount.slice(38, 42) */}
         </Label>
       </div>
 
@@ -38,7 +44,7 @@ export const UserDetails = ({ walletData, currencySymbol, etherscan }:PropsType)
         <AccountDetails
           isModalOpen={isModalOpen}
           handleCloseModal={handleCloseModal}
-          currentAccount={walletData.currentAccount}
+          currentAccount={accountAddress}
           etherscan={etherscan}
         />
       )}

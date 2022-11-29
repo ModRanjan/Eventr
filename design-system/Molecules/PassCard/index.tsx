@@ -61,16 +61,6 @@ const PassCard = ({ title, price, passType }: PassCardType) => {
             </Button>
           </div>
         </div>
-
-        <Button
-          bgColor="bg-gray-200 hover:bg-gray-300 "
-          customClasses="rounded-full transition-colors duration-300 ease-in-out"
-          display="absolute top-2 right-2"
-          padding="p-1"
-          width="w-6"
-        >
-          <Icon icon={ImCross} />
-        </Button>
       </div>
     </div>
   );

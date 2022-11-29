@@ -29,7 +29,7 @@ const Layout = ({ children }: LayoutProps) => {
         */}
 
         {children}
-        <Footer />
+        {/* <Footer /> */}
 
         <ToastContainer
           position="top-center"

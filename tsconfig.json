@@ -1,5 +1,14 @@
 {
   "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "@/Atoms/*": ["design-system/Atom/*"],
+      "@/Molecules/*": ["design-system/Molecules/*"],
+      "@/Organisms/*": ["design-system/Organisms/*"],
+      "@/utils/*": ["utils/*"],
+      "@/redux/*": ["redux/*"],
+      "@/config/*": ["config/*"]
+    },
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,

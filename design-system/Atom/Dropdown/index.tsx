@@ -3,28 +3,33 @@ import { FiChevronDown } from 'react-icons/fi';
 import { Image } from '../Image';
 import { Icon } from '../Icon';
 type DropdownProps = {
-  name:string;
-  dropdownOnClick?:()=>void;
-  imgSrc:string;
-  disabled?:boolean;
-  dropdownRef?:any
-}
+  name: string;
+  dropdownOnClick?: () => void;
+  imgSrc?: string;
+  disabled?: boolean;
+  dropdownRef?: any;
+};
 export const Dropdown = ({
   name,
   dropdownOnClick,
   imgSrc,
   disabled,
   dropdownRef,
-}:DropdownProps) => {
+}: DropdownProps) => {
   const className = [
-    'flex items-center',
-    'md:px-3',
-    'border-2 border-indigo-300 bg-white',
-    'relative',
-    'font-sans font-medium',
-    'rounded-xl',
-    disabled ? 'disabled ' : '',
+    'bg-white',
+    'border border-gray-300',
     'cursor-pointer',
+    'font-medium',
+    'hover:bg-gray-50',
+    'relative inline-flex justify-center items-center',
+    'mx-auto',
+    'px-2.5 py-1.5',
+    'rounded-md',
+    'shadow-sm',
+    'text-xs text-gray-700',
+    'w-full',
+    disabled ? 'disabled ' : null,
   ].join(' ');
 
   return (
@@ -34,9 +39,13 @@ export const Dropdown = ({
       disabled={disabled}
       onClick={dropdownOnClick}
     >
-      <Image src={imgSrc} alt={'$'} className={'w-4  my-1.5 lg:m-1.5'} />
-      <span className="hidden sm:block ">{name}</span>
-      <Icon icon={FiChevronDown} className=" m-1.5" />
+      {imgSrc && (
+        <Image src={imgSrc} alt={'-'} className={'w-4  my-1.5 lg:m-1.5'} />
+      )}
+
+      {name}
+
+      <Icon icon={FiChevronDown} className=" mx-1" />
     </button>
   );
 };

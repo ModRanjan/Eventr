@@ -8,7 +8,7 @@ type InputProps = {
   id?: string;
   inputRef?: any;
   label?: string;
-  onChange: () => void;
+  onChange?: () => void;
   placeholder?: string;
   required?: boolean;
   textProperties?: string;

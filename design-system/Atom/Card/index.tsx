@@ -46,12 +46,13 @@ export const Card = ({
         <div className="flex-grow"></div>
         <Button
           bgColor="bg-black hover:bg-gray-700"
+          display="self-end"
           textProperties="text-base font-medium text-white sm:text-sm"
           padding="px-4 py-2 sm:ml-3"
-          customClasses="self-end border border-transparent  focus:outline-none sm:w-auto"
+          width="sm:w-auto"
           onClick={onClick}
         >
-          View
+          Edit
         </Button>
       </div>
     </div>

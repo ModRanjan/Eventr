@@ -18,9 +18,8 @@ const Hero = () => {
       <div className="py-3 space-y-5">
         <ConnectWallet
           bgColor="bg-black hover:bg-gray-900"
-          textProperties="text-white"
-          padding="px-6 py-3"
-          customClasses="mt-10 border-2 border-white leading-4"
+          textProperties="leading-4 text-white"
+          padding="px-6 py-3 mt-10"
         />
       </div>
     </div>

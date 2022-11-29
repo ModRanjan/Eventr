@@ -128,9 +128,8 @@ export const UserAccount = () => {
   ) : (
     <ConnectWallet
       bgColor="bg-black hover:bg-gray-900"
-      textProperties="whitespace-nowrap text-white sm:text-base"
+      textProperties="whitespace-nowrap text-white sm:text-base leading-4 ml-6"
       padding="px-3 py-2 sm:px-6 sm:py-3"
-      customClasses="leading-4 ml-6"
     />
   );
 };

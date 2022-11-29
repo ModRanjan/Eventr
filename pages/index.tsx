@@ -1,27 +1,22 @@
-import type { NextPage } from 'next'
-import Head from 'next/head'
-import { default as HomePage } from '../design-system/Organisms/Home';
-const Home: NextPage = () => {
-  const handleOnClick=()=>{
-    alert("Clicked")
-  }
+import { useEffect } from 'react';
+import { useRouter } from 'next/router';
 
-  const handleFunction=(data:number)=>{
-    alert(data)
-  }
+import Eventr from '../design-system/Organisms/Eventr';
 
+import { useAppSelector } from '@/redux/hooks';
 
-  return (
-    <div>
-      <Head>
-        <title>Web3-Boilerplate</title>
-        <link rel="icon" href="/images/web3.png" />
-      </Head>
+const index = () => {
+  const router = useRouter();
 
-     <HomePage />
-      
-      </div>
-  )
-}
+  const walletData = useAppSelector((state) => state.wallets);
 
-export default Home
+  useEffect(() => {
+    if (walletData.loggedIn) {
+      router.push('/Home');
+    }
+  }, [walletData]);
+
+  return !walletData.loggedIn && <Eventr />;
+};
+
+export default index;

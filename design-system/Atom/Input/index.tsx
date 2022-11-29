@@ -31,12 +31,12 @@ export const Input = ({
 }: InputProps) => {
   const className = [
     'block',
-    'border-gray-300',
+    'border border-gray-300',
     display ? display : 'inline-flex items-center justify-center',
     error && 'border-red-500 outline-red-500',
     'focus:ring-sky-500 focus:border-sky-500',
     'outline-0',
-    'px-2 py-1',
+    'px-2 py-1.5 ',
     'rounded-md',
     'shadow-sm',
     textProperties ? textProperties : 'text-sm font-normal',
@@ -49,7 +49,7 @@ export const Input = ({
       <input
         type={type}
         id={id}
-        className={className}
+        className={customClasses || className}
         placeholder={placeholder}
         onChange={onChange}
         ref={inputRef}

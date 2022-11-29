@@ -1,4 +1,13 @@
-import { IChainData } from '../redux/reducer/data.type';
+export interface IChainData {
+  name: string;
+  chain: string;
+  chainId: number;
+  nativeCurrencySymbol: string;
+  rpc: string[];
+  logoUrl: string;
+  subgraphApiUrl: string;
+  etherscan: string;
+}
 
 export const chainList: IChainData[] = [
   {

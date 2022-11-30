@@ -1,6 +1,6 @@
 import { Card } from '@/Atoms/Card';
 
-import { NftsData } from '@/config/nftsData';
+import { nftsData } from '@/config/nftsData';
 import Router from 'next/router';
 
 export const AllEvents = () => {
@@ -10,7 +10,7 @@ export const AllEvents = () => {
 
   return (
     <div className="z-20 grid grid-cols-1 gap-4 sm:grid-cols-2">
-      {NftsData.map((item, index) => {
+      {nftsData.map((item, index) => {
         return (
           <Card
             onClick={() => eventDetail(item.name)}

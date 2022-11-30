@@ -1,10 +1,10 @@
 import { NftCard } from '@/Atoms/Card/NftCard';
-import { NftsData } from '@/config/nftsData';
+import { nftsData } from '@/config/nftsData';
 
 const Nfts = () => {
   return (
     <div className="flex w-auto gap-4 px-2 pb-12 overflow-x-scroll sm:px-12">
-      {NftsData.map((item, index) => {
+      {nftsData.map((item, index) => {
         return (
           index < 9 && (
             <NftCard

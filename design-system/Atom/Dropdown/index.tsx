@@ -24,7 +24,7 @@ export const Dropdown = ({
     'hover:bg-gray-50',
     'relative inline-flex justify-center items-center',
     'mx-auto',
-    'px-2.5 py-1.5',
+    'px-2.5 py-2',
     'rounded-md',
     'shadow-sm',
     'text-xs text-gray-700',
@@ -45,7 +45,7 @@ export const Dropdown = ({
 
       {name}
 
-      <Icon icon={FiChevronDown} className=" mx-1" />
+      <Icon icon={FiChevronDown} className="mx-1 " />
     </button>
   );
 };

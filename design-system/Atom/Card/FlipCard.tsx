@@ -18,7 +18,7 @@ amet velit accusamus.`,
     <div className="w-[350px] h-[420px] bg-transparent cursor-pointer group perspective">
       <div className="relative w-full h-full duration-1000 preserve-3d group-hover:my-rotate-y-180">
         <div className="absolute w-full h-full backface-hidden">
-          <img src={imgSrc} className="w-full h-full" />
+          <img src={imgSrc} className="w-full h-full" alt={name} />
         </div>
         <div className="absolute w-full h-full overflow-hidden bg-gray-100 my-rotate-y-180 backface-hidden">
           <div className="flex flex-col items-center justify-center h-full px-2 pb-24 text-center text-gray-800">

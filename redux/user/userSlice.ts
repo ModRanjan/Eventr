@@ -42,24 +42,9 @@ const userSlice = createSlice({
     builder.addCase(removeConnectedWallet, (state, payload) => {
       state.loggedIn = false;
     });
-
-    //   builder.addCase(getUsers.pending, (state) => {
-    //     state.loading = true;
-    //   });
-    //   builder.addCase(getUsers.fulfilled, (state, action) => {
-    //     state.user = action.payload;
-    //     state.loading = false;
-    //   });
-    //   builder.addCase(getUsers.rejected, (state, action) => {
-    //     state.loading = false;
-    //     state.errors = action.payload;
-    //   });
   },
 });
 
 export const { setUser } = userSlice.actions;
-
-// Other code such as selectors can use the imported `RootState` type
-// export const selectCount = (state: RootState) => state.user.value;
 
 export default userSlice.reducer;

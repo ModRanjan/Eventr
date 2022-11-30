@@ -32,7 +32,7 @@ export const UserDetails = ({
         </Label> */}
         <Label
           onHoverTitle="Wallet Address"
-          className="mx-auto px-3 text-sm py-1.5 font-medium text-black hover:text-gray-700"
+          className="mx-auto px-4 text-sm py-1.5 font-medium text-black hover:text-gray-700"
         >
           {accountAddress.slice(0, 5) + '...' + accountAddress.slice(13)}
 

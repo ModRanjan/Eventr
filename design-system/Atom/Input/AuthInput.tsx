@@ -1,32 +1,25 @@
-import React from 'react';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
 
-type InputProps = {
+import { Input } from '@/Atoms/Input';
+
+type AuthInputProps = {
   customClasses?: string;
-  error?: boolean;
   display?: string;
-  inputRef?: any;
-  label?: string;
-  name?: string;
-  onChange?: () => void;
+  name: string;
+  label: string;
   placeholder?: string;
   textProperties?: string;
   type: React.HTMLInputTypeAttribute;
-  value?: string;
 };
-
-export const Input = ({
+const AuthInput = ({
   customClasses,
-  error,
   display,
-  inputRef,
-  label,
   name,
-  onChange,
+  label,
   placeholder,
   textProperties,
   type,
-  value,
-}: InputProps) => {
+}: AuthInputProps) => {
   const className = [
     'block',
     'border border-gray-300',
@@ -38,29 +31,31 @@ export const Input = ({
     'shadow-sm',
     textProperties ? textProperties : 'text-gray-600 text-sm font-normal',
     'w-full',
-    error && 'border-red-500 outline-red-500',
   ].join(' ');
 
   return (
-    <div className="flex flex-col space-y-1 font-semibold">
+    <div className="flex flex-col">
       {label && (
         <label htmlFor={name} className="font-medium text-gray-600">
           {label}
         </label>
       )}
 
-      <input
+      <Field
         className={customClasses || className}
-        type={type}
         id={name}
-        placeholder={placeholder}
-        value={value}
         name={name}
-        onChange={onChange}
-        ref={inputRef}
+        type={type}
+        placeholder={placeholder}
       />
 
-      {error && <span className="text-sm text-red-500">{error}</span>}
+      <ErrorMessage
+        className="text-sm font-light text-red-500  outline-red-500"
+        component="span"
+        name={name}
+      />
     </div>
   );
 };
+
+export default AuthInput;

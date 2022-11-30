@@ -7,6 +7,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { Modal } from '@/Atoms/Modal';
 import { Image } from '@/Atoms/Image';
 import { Button } from '@/Atoms/Button';
+import { Icon } from '@/Atoms/Icon';
 
 type PropsType = {
   isModalOpen: boolean;
@@ -50,7 +51,7 @@ export default function AccountDetails({
                 }
                 className="flex items-center space-x-1 text-sm cursor-pointer"
               >
-                <FiCopy />
+                <Icon icon={FiCopy} />
                 <span> copy Address</span>
               </button>
             </CopyToClipboard>
@@ -61,7 +62,7 @@ export default function AccountDetails({
               className="flex items-center space-x-1 text-sm cursor-pointer"
               rel="noreferrer"
             >
-              <BsBoxArrowUpRight />
+              <Icon icon={BsBoxArrowUpRight} />
               <span>View On Etherscan</span>
             </a>
           </div>

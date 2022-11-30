@@ -8,11 +8,7 @@ type LogoProps = {
 
 const Logo = ({ className, url }: LogoProps) => {
   return (
-    <Button
-      link={url}
-      display="inline-block"
-      customClasses="border-0 focus:ring-0"
-    >
+    <Button link={url} customClasses="inline-block border-0 focus:ring-0">
       <Image src={'/images/web3.png'} alt="logo" className={className} />
     </Button>
   );

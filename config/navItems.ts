@@ -26,7 +26,7 @@ export const navItems: INavItemsData = [
   },
 ];
 
-export const SubNavItems = [
+export const subNavItems = [
   {
     name: 'Overview',
     url: '/Home',

@@ -1,4 +1,4 @@
-export const NftsData = [
+export const nftsData = [
   {
     name: 'item-1',
     owner: 'xyz.jha',

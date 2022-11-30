@@ -12,11 +12,6 @@ import { PageTitle } from '@/utils/GeneralFunctions';
 import { CreateEvent } from './CreateEvent';
 
 const Events = () => {
-  const eventName = useRef();
-  const eventDescription = useRef();
-  const startDate = useRef();
-  const endDate = useRef();
-
   useEffect(() => {
     if (document) {
       PageTitle('Create Events');

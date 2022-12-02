@@ -24,8 +24,8 @@ export const MenuItem = ({
   textProperties,
 }: MenuItemProps) => {
   const className = [
-    active && 'border-black text-black',
-    'border-b-2 border-transparent hover:border-gray-300',
+    ' border-b-2 hover:border-gray-300',
+    active ? 'border-black text-black' : 'border-transparent',
     'cursor-pointer',
     comingSoon && 'text-gray-400',
     'font-normal ',

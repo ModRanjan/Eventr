@@ -4,15 +4,8 @@ import { Label } from '@/Atoms/Label';
 import { Formik, Form, FormikHelpers } from 'formik';
 import { useRef, useState } from 'react';
 import * as Yup from 'yup';
-
-interface FormCreateEventValues {
-  title: string;
-  description: string;
-  startDate: string;
-  endDate: string;
-  profileURL: string;
-  coverURL: string;
-}
+import axios from '@/utils/Axios';
+import { FormEventValues } from './type';
 
 const validationSchema = Yup.object({
   title: Yup.string().required('Required!'),
@@ -26,13 +19,22 @@ const validationSchema = Yup.object({
 export const CreateEvent = () => {
   const [formValues, setFormValues] = useState(null);
 
-  const initialValue: FormCreateEventValues = {
+  const initialValue: FormEventValues = {
     title: '',
     description: '',
     startDate: '',
     endDate: '',
     profileURL: '',
     coverURL: '',
+  };
+
+  const formSubmitHandler = async (postData: any) => {
+    axios.post('/event', postData).then((response) => {
+      console.log('Response: ', response);
+      setTimeout(() => {
+        alert(JSON.stringify(postData, null, 2));
+      }, 500);
+    });
   };
 
   return (
@@ -47,14 +49,30 @@ export const CreateEvent = () => {
         <Formik
           initialValues={formValues || initialValue}
           validationSchema={validationSchema}
-          onSubmit={(
-            values: FormCreateEventValues,
-            { setSubmitting }: FormikHelpers<FormCreateEventValues>,
+          onSubmit={async (
+            values: FormEventValues,
+            { setSubmitting }: FormikHelpers<FormEventValues>,
           ) => {
-            setTimeout(() => {
-              alert(JSON.stringify(values, null, 2));
-              setSubmitting(false);
-            }, 500);
+            const postData = {
+              title: values.title,
+              description: values.description,
+              startDate: values.startDate,
+              endDate: values.endDate,
+              profile: {
+                url: values.profileURL,
+                size: 150,
+                mimeType: 'image',
+                extension: '.png',
+              },
+              cover: {
+                url: values.profileURL,
+                size: 150,
+                mimeType: 'image',
+                extension: '.png',
+              },
+            };
+            await formSubmitHandler(postData);
+            setSubmitting(false);
           }}
         >
           <Form className="flex flex-col gap-y-4">
@@ -97,17 +115,19 @@ export const CreateEvent = () => {
               placeholder="blockchain.xyz"
               type="text"
             />
+
+            <Button
+              type="submit"
+              display="inline-flex self-end"
+              bgColor="bg-black hover:bg-gray-700"
+              padding="px-4 py-2.5"
+              textProperties="leading-4 text-white"
+              width="w-auto"
+            >
+              Create Event
+            </Button>
           </Form>
         </Formik>
-        <div className="float-right mt-4">
-          <Button
-            bgColor="bg-black hover:bg-gray-700"
-            padding="px-3 py-2"
-            textProperties="leading-4 whitespace-nowrap text-white"
-          >
-            Create Event
-          </Button>
-        </div>
       </div>
     </div>
   );

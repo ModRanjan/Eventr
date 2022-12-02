@@ -14,6 +14,7 @@ type ButtonProps = {
   padding?: string;
   rounded?: string;
   textProperties?: string;
+  type?: 'submit' | 'reset' | 'button' | undefined; // React.ButtonHTMLAttributes<HTMLAttributes>;
   width?: string;
 };
 
@@ -29,6 +30,7 @@ export const Button = ({
   padding,
   rounded,
   textProperties,
+  type,
   width,
 }: ButtonProps) => {
   const className = [
@@ -38,8 +40,7 @@ export const Button = ({
     'focus:outline-none',
     'focus:ring-2 focus:ring-offset-2 focus:ring-black',
     display ? display : 'inline-flex items-center justify-center',
-    'mx-auto',
-    padding ? padding : 'px-2.5 py-1.5',
+    padding ? padding : 'px-2.5 py-1.5 mx-auto',
     rounded ? rounded : 'rounded-md',
     'shadow-sm',
     textProperties ? textProperties : 'text-sm text-gray-700',
@@ -60,6 +61,7 @@ export const Button = ({
     </Link>
   ) : (
     <button
+      type={type}
       className={customClasses || className}
       disabled={disabled}
       onClick={onClick}

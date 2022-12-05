@@ -30,7 +30,6 @@ export const UserAccount = () => {
 
   useEffect(() => {
     const windowSessionData = getSessionStorage('walletData');
-    // setSessionData(windowSessionData);
 
     if (windowSessionData && windowSessionData.loggedIn) {
       const connectedWallet = windowSessionData.connectedWallet;
@@ -86,10 +85,9 @@ export const UserAccount = () => {
   function handleDisconnect() {
     const connectedWallets = walletsData.connectedWallets;
 
-    const session = getSessionStorage('walletData');
-
     const perviousWalletData = connectedWallets.filter((Account: any) => {
-      const currentUserAddress = session.connectedWallet.currentAccount;
+      const currentUserAddress = currentAccount?.currentAccount;
+
       return shallowEqual(Account.currentAccount, currentUserAddress);
     });
 

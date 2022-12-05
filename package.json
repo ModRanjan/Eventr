@@ -15,6 +15,7 @@
     "@reduxjs/toolkit": "^1.9.0",
     "@walletconnect/web3-provider": "^1.8.0",
     "axios": "^1.2.0",
+    "date-fns": "^2.29.3",
     "ethers": "^5.7.1",
     "formik": "^2.2.9",
     "fortmatic": "^2.4.0",

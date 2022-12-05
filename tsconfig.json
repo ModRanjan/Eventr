@@ -28,7 +28,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "design-system/Organisms/Events/CreateEvent"
+    "design-system/Organisms/Events/EventForm"
   ],
   "exclude": ["node_modules"]
 }

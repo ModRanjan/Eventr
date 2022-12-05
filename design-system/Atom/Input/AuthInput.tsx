@@ -1,6 +1,4 @@
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-
-import { Input } from '@/Atoms/Input';
+import { Field, ErrorMessage } from 'formik';
 
 type AuthInputProps = {
   customClasses?: string;
@@ -11,7 +9,8 @@ type AuthInputProps = {
   textProperties?: string;
   type: React.HTMLInputTypeAttribute;
 };
-const AuthInput = ({
+
+export const AuthInput = ({
   customClasses,
   display,
   name,
@@ -36,26 +35,35 @@ const AuthInput = ({
   return (
     <div className="flex flex-col">
       {label && (
-        <label htmlFor={name} className="font-medium text-gray-600">
+        <label htmlFor={name} className="mb-1 font-medium text-gray-600">
           {label}
         </label>
       )}
 
-      <Field
-        className={customClasses || className}
-        id={name}
-        name={name}
-        type={type}
-        placeholder={placeholder}
-      />
+      <Field name={name}>
+        {(props: any) => {
+          const { field, form, meta } = props;
 
-      <ErrorMessage
-        className="text-sm font-light text-red-500  outline-red-500"
-        component="span"
-        name={name}
-      />
+          return (
+            <>
+              <input
+                className={customClasses || className}
+                id={name}
+                name={name}
+                type={type}
+                placeholder={placeholder}
+                {...field}
+              />
+
+              <ErrorMessage
+                className="text-sm font-light text-red-500 outline-red-500"
+                component="span"
+                name={name}
+              />
+            </>
+          );
+        }}
+      </Field>
     </div>
   );
 };
-
-export default AuthInput;

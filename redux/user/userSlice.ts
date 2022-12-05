@@ -1,8 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import type { RootState } from '../store';
 import { IUser } from './types';
-import { IEvent } from '../event/types';
 import {
   addConnectedWallet,
   removeConnectedWallet,

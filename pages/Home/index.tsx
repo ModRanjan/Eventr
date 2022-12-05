@@ -1,7 +1,5 @@
-import { useEffect } from 'react';
 import { default as HomePage } from '../../design-system/Organisms/Home';
 import PageLayout from '../../design-system/Organisms/Layout/PageLayout';
-import { PageTitle } from '../../utils/GeneralFunctions';
 
 const Home = () => {
   return (

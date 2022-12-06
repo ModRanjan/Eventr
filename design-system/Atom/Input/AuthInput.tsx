@@ -8,6 +8,7 @@ type AuthInputProps = {
   placeholder?: string;
   textProperties?: string;
   type: React.HTMLInputTypeAttribute;
+  width?: string;
 };
 
 export const AuthInput = ({
@@ -18,6 +19,7 @@ export const AuthInput = ({
   placeholder,
   textProperties,
   type,
+  width,
 }: AuthInputProps) => {
   const className = [
     'block',
@@ -29,7 +31,7 @@ export const AuthInput = ({
     'rounded-md',
     'shadow-sm',
     textProperties ? textProperties : 'text-gray-600 text-sm font-normal',
-    'w-full',
+    width ? width : 'w-full',
   ].join(' ');
 
   return (

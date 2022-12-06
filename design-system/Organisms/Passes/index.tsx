@@ -2,7 +2,7 @@ import { Icon } from '@/Atoms/Icon';
 import PassCard from '@/Molecules/PassCard';
 import { BsCheck2All } from 'react-icons/bs';
 
-const Passes = () => {
+export const Passes = () => {
   return (
     <section className="mx-0 my-auto text-center ">
       <h2 className="mb-5 text-3xl text-center">Your Passes</h2>
@@ -180,5 +180,3 @@ const Passes = () => {
     </section>
   );
 };
-
-export default Passes;

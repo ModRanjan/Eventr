@@ -1,7 +1,7 @@
 export type file = {
   url: string;
   size?: string;
-  type: 'profile' | 'cover';
+  type: 'Profile' | 'Cover';
   mimeType: 'image' | 'video' | string;
   extension: string;
 };

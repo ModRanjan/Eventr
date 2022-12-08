@@ -1,29 +1,30 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import { FormikHelpers } from 'formik';
 import { compareAsc, format } from 'date-fns';
 
-import { FormEventValues } from './EventForm/type';
+import { FormEventValues } from '@/Molecules/EventForm/type';
 
 import { Image } from '@/Atoms/Image';
-import { EventForm } from './EventForm';
+import { EventForm } from '@/Molecules/EventForm';
 
-import axios from '@/utils/Axios';
+import { createEvent } from '@/services/event';
 import { PageTitle } from '@/utils/GeneralFunctions';
+
+const initialValue: FormEventValues = {
+  title: '',
+  description: '',
+  startDate: format(new Date(), 'yyyy-MM-dd hh:mm').replace(' ', 'T'),
+  endDate: format(new Date(), 'yyyy-MM-dd'),
+  profileURL: '',
+  coverURL: '',
+};
+
 const Events = () => {
   useEffect(() => {
     if (document) {
       PageTitle('Create Events');
     }
   }, []);
-
-  const initialValue: FormEventValues = {
-    title: '',
-    description: '',
-    startDate: format(new Date(), 'yyyy-MM-dd hh:mm').replace(' ', 'T'),
-    endDate: format(new Date(), 'yyyy-MM-dd'),
-    profileURL: '',
-    coverURL: '',
-  };
 
   const formSubmitHandler = async (
     values: FormEventValues,
@@ -36,40 +37,42 @@ const Events = () => {
       endDate: values.endDate,
       profile: {
         url: values.profileURL,
-        size: 150,
+
         mimeType: 'image',
         extension: '.png',
       },
       cover: {
         url: values.profileURL,
-        size: 150,
+
         mimeType: 'image',
         extension: '.png',
       },
     };
 
-    axios
-      .post('/event', EventData)
+    createEvent(EventData)
       .then((response) => {
-        console.log('Response: ', response.data);
-        alert(JSON.stringify(response.data.data, null, 2));
+        console.log('Event Created: ', response);
+        alert(JSON.stringify(response, null, 2));
+
         setSubmitting(false);
       })
-      .catch((error) => console.log('create event error', error.message));
+      .catch((error) => {
+        console.log('Error:', error.message);
+      });
   };
 
   return (
-    <section className="flex justify-between px-4 py-5 sm:py-8 sm:px-0">
-      <div className="relative flex items-center w-full px-4 py-4 space-x-3 bg-white border border-gray-300 rounded-lg shadow-sm md:w-2/3 sm:px-6 sm:py-5 hover:shadow-lg">
+    <section className="flex justify-between sm:px-0">
+      <div className="relative flex items-center w-full pt-2 space-x-3 bg-white border border-gray-400 rounded-lg shadow-sm md:w-2/3 hover:drop-shadow-xl">
         <EventForm
-          formTitle="Create Event"
+          formTitle="Create Event:"
           buttonTitle="Create Event"
-          formSubmitHandler={formSubmitHandler}
           formInitialValues={initialValue}
+          formSubmitHandler={formSubmitHandler}
         />
       </div>
 
-      <div className="flex-col hidden w-2/5 pt-6 md:flex sm:px-6 lg:px-8">
+      <div className="flex-col hidden w-2/5 px-4 pt-6 md:flex sm:px-6 lg:px-8">
         <div className="mt-16">
           <Image
             src="images/event.jpg"

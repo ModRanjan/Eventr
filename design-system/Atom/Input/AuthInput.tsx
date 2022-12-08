@@ -1,36 +1,44 @@
 import { Field, ErrorMessage } from 'formik';
 
 type AuthInputProps = {
+  border?: string;
   customClasses?: string;
   display?: string;
   name: string;
   label: string;
+  labelClasses?: string;
+  padding?: string;
   placeholder?: string;
   textProperties?: string;
   type: React.HTMLInputTypeAttribute;
   width?: string;
+  options?: string[];
 };
-
 export const AuthInput = ({
+  border,
   customClasses,
+  labelClasses,
   display,
   name,
   label,
+  padding,
   placeholder,
   textProperties,
   type,
   width,
+  options,
 }: AuthInputProps) => {
   const className = [
-    'block',
-    'border border-gray-300',
+    border ? border : 'border border-gray-300',
     display ? display : 'inline-flex items-center justify-center',
-    'focus:ring-sky-500 focus:border-sky-500',
+    'focus:outline-none focus:ring-blue-500 focus:border-blue-500',
     'outline-0',
-    'px-2 py-1',
+    padding ? padding : 'px-2 py-1 sm:px-3 sm:py-2',
     'rounded-md',
     'shadow-sm',
-    textProperties ? textProperties : 'text-gray-600 text-sm font-normal',
+    textProperties
+      ? textProperties
+      : 'font-Roboto sm:text-base placeholder-gray-400 text-sm',
     width ? width : 'w-full',
   ].join(' ');
 
@@ -42,30 +50,19 @@ export const AuthInput = ({
         </label>
       )}
 
-      <Field name={name}>
-        {(props: any) => {
-          const { field, form, meta } = props;
+      <Field
+        className={customClasses || className}
+        type={type}
+        id={name}
+        name={name}
+        placeholder={placeholder}
+      />
 
-          return (
-            <>
-              <input
-                className={customClasses || className}
-                id={name}
-                name={name}
-                type={type}
-                placeholder={placeholder}
-                {...field}
-              />
-
-              <ErrorMessage
-                className="text-sm font-light text-red-500 outline-red-500"
-                component="span"
-                name={name}
-              />
-            </>
-          );
-        }}
-      </Field>
+      <ErrorMessage
+        className="text-sm font-light text-red-500 outline-red-500"
+        component="span"
+        name={name}
+      />
     </div>
   );
 };

@@ -7,7 +7,8 @@
       "@/Organisms/*": ["design-system/Organisms/*"],
       "@/utils/*": ["utils/*"],
       "@/redux/*": ["redux/*"],
-      "@/config/*": ["config/*"]
+      "@/config/*": ["config/*"],
+      "@/services/*": ["services/*"]
     },
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
@@ -24,11 +25,6 @@
     "jsx": "preserve",
     "incremental": true
   },
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    "design-system/Organisms/Events/CreateEvent"
-  ],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]
 }

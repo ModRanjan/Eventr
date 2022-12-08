@@ -1,8 +1,7 @@
-export interface IEvent {
-  title: string;
-  slug?: string;
-  description?: string;
-  startDate: Date;
-  endDate: Date;
-  published: boolean;
-}
+export type file = {
+  url: string;
+  size?: string;
+  type: 'Profile' | 'Cover';
+  mimeType: 'image' | 'video' | string;
+  extension: string;
+};

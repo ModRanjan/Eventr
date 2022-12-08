@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { Card } from '@/Atoms/Card';
 import { Label } from '@/Atoms/Label';
 
-import axios from '@/utils/Axios';
+import { getMyEvent } from '@/services/event';
 import { event } from '@/redux/event/types';
 
 export interface myEvent {
@@ -27,10 +27,9 @@ export const AllEvents = () => {
     let tempEventData: myEvent[] = [];
     let MyEventData: myEvent;
 
-    axios
-      .get('event/myEvents')
+    getMyEvent()
       .then((response) => {
-        const responseData = response.data.data;
+        const responseData = response.data;
 
         responseData.map((item: event) => {
           if (item) {
@@ -53,6 +52,7 @@ export const AllEvents = () => {
       .catch((error) => {
         console.log('Error in getting myEvents Data:', error);
       });
+
     setLoading(false);
   };
 

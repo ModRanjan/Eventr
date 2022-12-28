@@ -1,18 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FormikHelpers } from 'formik';
 
-import { Button } from '@/Atoms/Button';
 import { Label } from '@/Atoms/Label';
 import { MenuBar } from '@/Molecules/MenuBar';
-import { Profile } from '../Profile';
-import { FormProfileValues } from '../Profile/type';
+import { AllEvents } from '@/Molecules/AllEvents';
 
-import axios from '@/utils/Axios';
-import { PageTitle } from '@/utils/GeneralFunctions';
+import Profile from './Profile';
+import PassCards from './PassCards';
+import LinkedAddress from './LinkedAddress';
+import { FormProfileValues } from './Profile/type';
+
 import { IUser } from '@/redux/user/types';
-import { Passes } from '../Passes';
-import { AllEvents } from '../AllEvents';
-import { file } from '@/redux/event/types';
+import { File } from '@/redux/event/types';
+import { useAppSelector } from '@/redux/hooks';
+
+import { getUser, updateUser } from '@/services/user';
 
 type fileUrls = {
   profileURL: string;
@@ -20,14 +22,14 @@ type fileUrls = {
 };
 
 const Settings = () => {
-  const [address, setAddress] = useState();
-  const [currentPage, setCurrentPage] = useState('Profile');
+  const [currentSection, setCurrentSection] = useState('Profile');
   const [prevUserDatail, setPrevUserDetail] = useState<IUser>();
   const [prevUserFiles, setPrevUserFiles] = useState<fileUrls>();
   const [initialValue, setInitialValue] = useState<FormProfileValues>();
+  const allEvents = useAppSelector((state) => state.event.events);
 
-  const getCurrentPage = (value: string) => {
-    setCurrentPage(value);
+  const getCurrentSection = (value: string) => {
+    setCurrentSection(value);
   };
 
   const getUserDetails = async () => {
@@ -36,12 +38,11 @@ const Settings = () => {
       coverURL: '',
     };
 
-    await axios
-      .get('/user')
+    getUser()
       .then((response) => {
-        const userDatails = response.data.data.userDetail;
+        const userDatails = response.data.userDetail;
 
-        userDatails.Files.map((item: file) => {
+        userDatails.Files.map((item: File) => {
           if (item?.type === 'Profile') {
             fileUrls.profileURL = item.url;
           } else {
@@ -52,14 +53,10 @@ const Settings = () => {
         setPrevUserFiles(fileUrls);
         setPrevUserDetail(userDatails);
       })
-      .catch((error) => console.log('Get User Details Error', error.message));
+      .catch((error) => console.error('Get User Details Error', error.message));
   };
 
   useEffect(() => {
-    if (document) {
-      PageTitle('Settings');
-    }
-
     getUserDetails();
   }, []);
 
@@ -99,11 +96,11 @@ const Settings = () => {
       },
     };
 
-    axios
-      .put('/user', UserData)
+    updateUser(UserData)
       .then((response) => {
         console.log('Response: ', response.data);
-        alert(JSON.stringify(response.data.data, null, 2));
+
+        alert(JSON.stringify(response.data, null, 2));
         setSubmitting(false);
       })
       .catch((error) => console.log('Update User Error', error.message));
@@ -112,66 +109,42 @@ const Settings = () => {
   return (
     <>
       <Label>
-        <h1 className="py-8 text-2xl font-bold text-gray-900 sm:text-3xl">
-          Settings
-        </h1>
+        <h3 className="section-title">Settings</h3>
       </Label>
 
-      <div className="pb-6 mx-auto lg:pb-16">
-        <div className="overflow-hidden bg-white border rounded-lg shadow">
-          <div className="divide-y divide-gray-200 lg:grid lg:grid-cols-12 lg:divide-y-0 lg:divide-x">
-            <aside className="py-6 lg:col-span-3 min-h-[75%]">
-              <MenuBar onClick={getCurrentPage} />
+      <div className="py-5 pb-6 mx-auto sm:py-6 sm:px-0 lg:pb-16 ">
+        <div className="overflow-hidden bg-white border border-gray-300 rounded-lg shadow-md">
+          <div className="divide-y divide-gray-300 lg:grid lg:grid-cols-12 lg:divide-y-0 lg:divide-x">
+            <aside className="py-4 lg:col-span-3 min-h-[75%]">
+              <MenuBar onClick={getCurrentSection} />
             </aside>
 
-            <div className="divide-y divide-gray-200 lg:col-span-9">
-              {currentPage == 'Profile' && initialValue !== undefined && (
+            <div className="divide-y divide-gray-400 lg:col-span-9">
+              {currentSection == 'Profile' && initialValue !== undefined && (
                 <Profile
                   formSubmitHandler={formSubmitHandler}
                   formInitialValues={initialValue}
                 />
               )}
 
-              {currentPage == 'Linked Addresses' && (
-                <div className="px-2 border rounded-lg md:border-l md:px-6 md:col-span-3">
-                  <Label className="my-3 text-3xl font-semibold">
-                    Linked Addresses
+              {currentSection == 'Linked Addresses' && <LinkedAddress />}
+
+              {currentSection == 'All Events' && (
+                <div className="px-4 py-5 space-y-4 sm:py-6 sm:px-0">
+                  <Label className="sm:px-6 lg:px-8">
+                    <h3 className="section-title">Your Events</h3>
                   </Label>
 
-                  <Button
-                    bgColor="bg-black dark:bg-primary-400 hover:bg-primary-300"
-                    padding="px-3 py-2 ml-auto"
-                    display="float-right"
-                    textProperties="whitespace-nowrap text-white text-sm"
-                    width="w-32"
-                  >
-                    Add Address
-                  </Button>
-                  <div className="flex items-center gap-2 cursor-pointer ">
-                    <div className="w-12 h-12 border rounded-full border-zinc-900 bg-gradient-to-r from-sky-500 to-indigo-500" />
-                    <p
-                      className="inline-block px-2 text-xl text-primary-500 hover:text-primary-900"
-                      title="wallet-address"
-                    >
-                      4888621a47426aa0
-                    </p>
+                  <div className="max-w-4xl mx-auto overflow-hidden bg-white sm:px-6 lg:px-8">
+                    <AllEvents
+                      className="grid grid-cols-1 gap-y-6 gap-x-4 md:grid-cols-2"
+                      events={allEvents}
+                    />
                   </div>
                 </div>
               )}
 
-              {currentPage == 'All Events' && (
-                <div className="px-6">
-                  <Label>
-                    <h3 className="py-6 text-2xl font-bold text-gray-900 sm:text-3xl sm:py-8">
-                      Your Events
-                    </h3>
-                  </Label>
-
-                  <AllEvents />
-                </div>
-              )}
-
-              {currentPage == 'Your Passes' && <Passes />}
+              {currentSection == 'Your Passes' && <PassCards />}
             </div>
           </div>
         </div>
@@ -181,3 +154,48 @@ const Settings = () => {
 };
 
 export default Settings;
+
+/** FOR DARK MODE
+ * import { FiMoon, FiSun } from 'react-icons/fi';
+ * import { Icon } from '@/Atoms/Icon';
+ * 
+ * const { systemTheme, theme, setTheme } = useTheme();
+ * const [mounted, setMounted] = useState(false);
+ * 
+ * useEffect(() => {
+    setMounted(true);
+   }, []);
+
+ * const renderThemeChanger = () => {
+    if (!mounted) return null;
+    const currentTheme = theme === 'system' ? systemTheme : theme;
+
+    if (currentTheme === 'dark') {
+      return (
+        <div
+          role="button"
+          className="flex items-center"
+          onClick={() => setTheme('light')}
+        >
+          <Icon className="w-7 h-7" icon={FiSun} />
+        </div>
+      );
+    } else {
+      return (
+        <div
+          role="button"
+          className="flex items-center"
+          onClick={() => setTheme('dark')}
+        >
+          <Icon className="w-7 h-7" icon={FiMoon} />
+        </div>
+      );
+    }
+  };
+
+
+
+  <div className="my-auto ml-auto justify-self-end">
+    {renderThemeChanger()}
+  </div>
+ */

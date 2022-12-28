@@ -1,14 +1,12 @@
-
-
-const TableHead = ({ columns }:any) => {
+export const TableHead = ({ columns }: any) => {
   return (
     <thead className="bg-indigo-100 ">
       <tr>
-        {columns.map(({ heading }:any) => (
+        {columns.map(({ heading }: any) => (
           <th
             key={heading}
             scope="col"
-            className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-700 uppercase "
+            className="px-4 py-2 text-sm font-semibold leading-4 uppercase font-Roboto whitespace-nowrap"
           >
             {heading}
           </th>
@@ -17,5 +15,3 @@ const TableHead = ({ columns }:any) => {
     </thead>
   );
 };
-
-export default TableHead;

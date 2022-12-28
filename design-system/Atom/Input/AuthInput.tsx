@@ -1,27 +1,26 @@
 import { Field, ErrorMessage } from 'formik';
 
 type AuthInputProps = {
-  border?: string;
   customClasses?: string;
   display?: string;
+  disabled?: boolean;
   name: string;
   label: string;
   labelClasses?: string;
-  padding?: string;
   placeholder?: string;
   textProperties?: string;
   type: React.HTMLInputTypeAttribute;
   width?: string;
   options?: string[];
 };
+
 export const AuthInput = ({
-  border,
   customClasses,
   labelClasses,
   display,
+  disabled,
   name,
   label,
-  padding,
   placeholder,
   textProperties,
   type,
@@ -29,11 +28,13 @@ export const AuthInput = ({
   options,
 }: AuthInputProps) => {
   const className = [
-    border ? border : 'border border-gray-300',
+    'block',
+    'border border-gray-300',
     display ? display : 'inline-flex items-center justify-center',
+    disabled && 'disabled cursor-pointer disabled:opacity-50 border-2',
     'focus:outline-none focus:ring-blue-500 focus:border-blue-500',
     'outline-0',
-    padding ? padding : 'px-2 py-1 sm:px-3 sm:py-2',
+    'px-2 py-1 sm:px-3 sm:py-2',
     'rounded-md',
     'shadow-sm',
     textProperties
@@ -42,27 +43,100 @@ export const AuthInput = ({
     width ? width : 'w-full',
   ].join(' ');
 
+  const CustomField = (type: string, options?: string[]) => {
+    switch (type) {
+      case 'input':
+        return (
+          <>
+            <Field
+              className={customClasses || className}
+              as="input"
+              id={name}
+              name={name}
+              placeholder={placeholder}
+              disabled={disabled}
+            />
+
+            <ErrorMessage
+              className="text-sm font-light text-red-500 outline-red-500"
+              component="span"
+              name={name}
+            />
+          </>
+        );
+
+      case 'select': {
+        return (
+          <>
+            <Field className={customClasses} as="select" id={name} name={name}>
+              {options !== undefined &&
+                options.map((option: string) => {
+                  return (
+                    <option
+                      className="text-2xl font-Roboto hover:bg-gray-400 active:text-white"
+                      key={option}
+                      value={option}
+                    >
+                      {option}
+                    </option>
+                  );
+                })}
+            </Field>
+
+            <ErrorMessage
+              className="text-sm font-light text-red-500 outline-red-500"
+              component="span"
+              name={name}
+            />
+          </>
+        );
+      }
+
+      default:
+        return (
+          <Field name={name}>
+            {(props: any) => {
+              const { field, form, meta } = props;
+
+              return (
+                <>
+                  <input
+                    className={customClasses || className}
+                    id={name}
+                    name={name}
+                    type={type}
+                    placeholder={placeholder}
+                    disabled={disabled}
+                    {...field}
+                  />
+
+                  <ErrorMessage
+                    className="text-sm font-light text-red-500 outline-red-500"
+                    component="span"
+                    name={name}
+                  />
+                </>
+              );
+            }}
+          </Field>
+        );
+        break;
+    }
+  };
+
   return (
     <div className="flex flex-col">
       {label && (
-        <label htmlFor={name} className="mb-1 font-medium text-gray-600">
+        // disabled && 'text-gray-400'
+        <label
+          htmlFor={name}
+          className={labelClasses || `mb-1 text-xs font-bold uppercase`}
+        >
           {label}
         </label>
       )}
 
-      <Field
-        className={customClasses || className}
-        type={type}
-        id={name}
-        name={name}
-        placeholder={placeholder}
-      />
-
-      <ErrorMessage
-        className="text-sm font-light text-red-500 outline-red-500"
-        component="span"
-        name={name}
-      />
+      {CustomField(type, options)}
     </div>
   );
 };

@@ -1,6 +1,3 @@
-import { AiFillHome, AiFillInfoCircle } from 'react-icons/ai';
-import { ImDatabase } from 'react-icons/im';
-
 export type INavItemsData = {
   name: string;
   icon?: any;
@@ -10,23 +7,20 @@ export type INavItemsData = {
 export const navItems: INavItemsData = [
   {
     name: 'Docs',
-
-    url: '/',
+    url: 'https://web3js.readthedocs.io/en/v1.7.5/',
   },
   {
     name: 'FAQ',
-
     url: '/all-users',
   },
 
   {
     name: 'Discord',
-
-    url: 'https://web3js.readthedocs.io/en/v1.7.5/',
+    url: '/',
   },
 ];
 
-export const subNavItems = [
+export const subNavItems: INavItemsData = [
   {
     name: 'Overview',
     url: '/Home',

@@ -1,52 +1,51 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { file } from './types';
-import { removeConnectedWallet } from '../wallet/walletSlice';
+import { Event, CurrentEvent } from './types';
+import { IPass, setPass } from '../pass/passSlice';
+import { shallowEqual } from 'react-redux';
 
 export interface IEvent {
-  id: number | null;
-  slug: number | null;
-  title: string;
-  description?: string;
-  startDate: string;
-  endDate: string;
-  Files: file[] | null;
+  events: Event[];
+  current: CurrentEvent | null;
 }
 
 export const initialState: IEvent = {
-  id: null,
-  slug: null,
-  title: '',
-  description: '',
-  startDate: '',
-  endDate: '',
-  Files: null,
+  events: [],
+  current: null,
 };
 
 const eventSlice = createSlice({
   name: 'event',
   initialState,
   reducers: {
-    setCurrentEvent: (state, action: PayloadAction<IEvent>) => {
-      console.log('action.payload', action.payload);
-      state.id = action.payload.id;
-      state.slug = action.payload.slug;
-      state.title = action.payload.title;
-      state.description = action.payload.description;
-      state.startDate = action.payload.startDate;
-      state.endDate = action.payload.endDate;
-      state.Files = action.payload.Files;
+    setCurrent: (state, action: PayloadAction<CurrentEvent>) => {
+      state.current = action.payload;
     },
+    setEvents: (state, action: PayloadAction<Event[]>) => {
+      const events = action.payload;
 
-    removeCurrentEvent: (state, action: PayloadAction<IEvent>) => {
-      state = action.payload;
+      events.map((tempEvent) => {
+        const existsAlready = state.events.find((event) =>
+          shallowEqual(tempEvent.id, event.id),
+        );
+
+        if (!existsAlready) {
+          state.events = state.events.concat(tempEvent);
+        }
+      });
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(removeConnectedWallet, (state) => {});
+    builder.addCase(setPass, (state, action: PayloadAction<IPass>) => {
+      const pass = action.payload.pass;
+
+      if (state.current)
+        if (pass) state.current.hasPass = true;
+        else state.current.hasPass = false;
+    });
   },
 });
 
-export const { setCurrentEvent, removeCurrentEvent } = eventSlice.actions;
+export const { setCurrent, setEvents } = eventSlice.actions;
 
 export default eventSlice.reducer;

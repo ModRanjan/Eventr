@@ -6,7 +6,7 @@ import OutsideClickHandler from 'react-outside-click-handler';
 import { Alert } from '@/Atoms/Alert';
 import { Menu } from '@/Atoms/Menu';
 import { Dropdown } from '@/Atoms/Dropdown';
-import Logo from '@/Molecules/Logo';
+import { Logo } from '@/Molecules/Logo';
 import { MenuBar } from '@/Molecules/MenuBar';
 import { Navigation } from '@/Molecules/Navigation';
 import { NetworksDropdown } from '@/Molecules/NetworkDropdown';
@@ -97,7 +97,7 @@ const Header = () => {
 
   return (
     <div
-      className={`shadow-md z-50 top-0  ${
+      className={`shadow-md z-40 top-0  ${
         connected ? 'bg-white dark:bg-primary-800 ' : 'bg-black'
       }`}
     >
@@ -108,7 +108,10 @@ const Header = () => {
       >
         {connected && (
           <div className="flex justify-between h-16">
-            <Logo url="/" className="h-8 cursor-pointer md:h-10" />
+            <Logo
+              url="/"
+              className="block w-auto h-12 cursor-pointer sm:h-12"
+            />
           </div>
         )}
 

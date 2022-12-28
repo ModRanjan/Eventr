@@ -9,7 +9,7 @@ export interface WalletState {
   loggedIn: boolean;
 }
 
-export const initialState: WalletState = {
+const initialState: WalletState = {
   connectedWallets: [],
   connectionType: null,
   loggedIn: false,

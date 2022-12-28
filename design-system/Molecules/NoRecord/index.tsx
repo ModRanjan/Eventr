@@ -1,16 +1,36 @@
-import { Image } from '../../Atom/Image';
-const NoRecord = () => {
+import { HiOutlinePlus } from 'react-icons/hi';
+
+import { Icon } from '@/Atoms/Icon';
+import { Label } from '@/Atoms/Label';
+import { Button } from '@/Atoms/Button';
+
+type NoRecordProps = {
+  buttonTitle: string;
+  message: string;
+  onClick?: (slug?: string) => void;
+};
+
+export const NoRecord = ({ buttonTitle, message, onClick }: NoRecordProps) => {
   return (
-    <div className="p-5 bg-white ">
-      <div className="flex items-center justify-center">
-        <Image src={'/images/emptyData.png'} className="h-40" alt="Empty" />
+    <div className="min-h-screen mt-5">
+      <div className="p-12 text-center border-2 border-gray-300 rounded-lg">
+        <Label>
+          <h3 className="mt-2 text-lg font-black text-gray-900">{message}</h3>
+        </Label>
+
+        <div className="mx-auto mt-6 w-fit">
+          <Button
+            onClick={onClick}
+            type="button"
+            bgColor="bg-black hover:bg-gray-700 border-transparent"
+            padding="px-4 py-2"
+            textProperties="text-sm leading-4 font-medium text-white"
+          >
+            <Icon className="w-5 h-5 mr-2 -ml-1" icon={HiOutlinePlus} />
+            {buttonTitle}
+          </Button>
+        </div>
       </div>
-      <h1 className="text-2xl text-center text-gray-700">No Locked Tokens</h1>
-      <h3 className="text-center text-gray-500">
-        You have not locked up any tokens yet.
-      </h3>
     </div>
   );
 };
-
-export default NoRecord;

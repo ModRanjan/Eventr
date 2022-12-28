@@ -4,14 +4,19 @@ import { Button } from '@/Atoms/Button';
 type LogoProps = {
   className: string;
   url?: string;
+  logoSrc?: string;
 };
 
-const Logo = ({ className, url }: LogoProps) => {
+export const Logo = ({ className, url, logoSrc }: LogoProps) => {
+  if (!url) {
+    return (
+      <Image src={logoSrc || '/eventr.svg'} alt="logo" className={className} />
+    );
+  }
+
   return (
     <Button link={url} customClasses="inline-block border-0 focus:ring-0">
-      <Image src={'/images/web3.png'} alt="logo" className={className} />
+      <Image src={logoSrc || '/eventr.svg'} alt="logo" className={className} />
     </Button>
   );
 };
-
-export default Logo;

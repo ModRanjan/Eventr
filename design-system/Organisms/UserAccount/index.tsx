@@ -106,7 +106,7 @@ export const UserAccount = () => {
   }
 
   return walletsData.loggedIn && currentAccount ? (
-    <div className="flex items-center gap-4 sm:mr-2">
+    <div className="flex items-center gap-x-4 sm:mr-2">
       <UserDetails
         accountBalance={currentAccount?.accountBalance?.toString()}
         accountAddress={currentAccount?.currentAccount}
@@ -114,10 +114,10 @@ export const UserAccount = () => {
         etherscan={chainData?.etherscan || '-'}
       />
 
-      <Button onClick={handleDisconnect} customClasses="cursor-pointer">
+      <Button onClick={handleDisconnect} customClasses="cursor-pointer ml-2">
         <img
           className="border-2 border-gray-300 rounded-full cursor-pointer w-11 h-11 "
-          src="images/walletAvtarLogo.png"
+          src="/images/walletAvtarLogo.png"
           onClick={handleDisconnect}
           title="Disconnect"
         />

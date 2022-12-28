@@ -2,9 +2,12 @@ import { configureStore } from '@reduxjs/toolkit';
 
 import user from './user/userSlice';
 import wallets from './wallet/walletSlice';
+import event from './event/eventSlice';
+import pass from './pass/passSlice';
+import passCategory from './passCategory/passCategorySlice';
 
 const store = configureStore({
-  reducer: { user, wallets },
+  reducer: { user, wallets, event, pass, passCategory },
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

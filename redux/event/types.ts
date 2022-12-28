@@ -1,4 +1,4 @@
-export type file = {
+export type File = {
   url: string;
   size?: string;
   type: 'Profile' | 'Cover';
@@ -6,12 +6,21 @@ export type file = {
   extension: string;
 };
 
-export interface event {
+/**
+ *
+ */
+export type Event = {
   id: number;
-  slug: number;
+  slug: string;
   title: string;
   description?: string;
   startDate: string;
   endDate: string;
-  Files: file[];
+  Files?: File[];
+};
+
+export interface CurrentEvent {
+  event: Event;
+  published: boolean;
+  hasPass: boolean;
 }

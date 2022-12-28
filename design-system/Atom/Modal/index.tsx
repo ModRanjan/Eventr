@@ -19,7 +19,7 @@ export const Modal = ({
         isOpen={open}
         onRequestClose={handleCloseModal}
         contentLabel="Wallet Details"
-        className="p-5 mx-auto mt-20 space-y-2 bg-white border rounded-lg shadow-lg md:w-2/5 shadow-indigo-200"
+        className="p-5 mx-auto mt-32 space-y-2 bg-white border rounded-lg shadow-lg md:w-2/5 shadow-indigo-200"
       >
         <div className="flex justify-between text-xl">
           <h3 className="inline-block"> {label} </h3>

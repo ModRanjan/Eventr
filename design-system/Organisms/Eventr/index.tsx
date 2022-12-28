@@ -6,7 +6,9 @@ import Nfts from './Nfts';
 const Eventr = () => {
   return (
     <>
-      <Hero />
+      <div className="pt-8 pb-12 overflow-hidden bg-black sm:pt-12 sm:pb-16 lg:relative lg:pt-28 lg:pb-44">
+        <Hero />
+      </div>
 
       <section className="flex flex-col w-full h-96 py-10 bg-[#202020]">
         <div className="relative block min-h-fit bg-primary-900">

@@ -1,24 +1,12 @@
 import * as Yup from 'yup';
-const { fileSchema } = require('./file');
 
-const createSchema = Yup.object({
+const EventSchema = Yup.object({
   title: Yup.string().required('Required!'),
-  description: Yup.string().optional(),
+  description: Yup.string().max(300, 'Too Long!').optional(),
   startDate: Yup.date().required('Required!'),
   endDate: Yup.date().required('Required!'),
-  profileURL: Yup.string().required('Required!'),
-  coverURL: Yup.string().required('Required!'),
-  // profile: fileSchema,
-  // cover: fileSchema,
+  profileURL: Yup.string().optional(),
+  coverURL: Yup.string().optional(),
 });
 
-const updateSchema = Yup.object({
-  title: Yup.string().required('Required!'),
-  description: Yup.string('Required!'),
-  startDate: Yup.date().required('Required!'),
-  endDate: Yup.date().required('Required!'),
-  // profile: fileSchema,
-  // cover: fileSchema,
-});
-
-export { createSchema, updateSchema };
+export { EventSchema };

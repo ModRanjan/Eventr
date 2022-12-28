@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
-import { MenuBar } from '@/Molecules/MenuBar';
+import ReactModal from 'react-modal';
 
 import Header from '../Header';
 import Footer from '../Footer';
@@ -13,12 +12,16 @@ type LayoutProps = {
 };
 
 const Layout = ({ children }: LayoutProps) => {
+  if (typeof window !== 'undefined') {
+    ReactModal.setAppElement('body');
+  }
+
   return (
     <>
       <Head>
         <title>Eventr</title>
         <meta name="description" content="" />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/eventr.ico" />
       </Head>
 
       <div className="min-h-screen">

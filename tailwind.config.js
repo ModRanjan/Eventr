@@ -39,6 +39,13 @@ module.exports = {
           100: '#f4f4f5',
         },
       },
+      fontFamily: {
+        Roboto: ['Roboto', 'Helvetica', 'sans-serif'],
+      },
+
+      boxShadow: {
+        lg: '0px 6px 10px rgba(0, 0, 0, 0.10)',
+      },
     },
   },
   plugins: [Myclass],

@@ -21,6 +21,9 @@ const eventSlice = createSlice({
     setCurrent: (state, action: PayloadAction<CurrentEvent>) => {
       state.current = action.payload;
     },
+    setCurrentPublished: (state, action: PayloadAction<boolean>) => {
+      if (state.current) state.current.published = action.payload;
+    },
     setEvents: (state, action: PayloadAction<Event[]>) => {
       const events = action.payload;
 
@@ -46,6 +49,7 @@ const eventSlice = createSlice({
   },
 });
 
-export const { setCurrent, setEvents } = eventSlice.actions;
+export const { setCurrent, setEvents, setCurrentPublished } =
+  eventSlice.actions;
 
 export default eventSlice.reducer;

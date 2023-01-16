@@ -14,6 +14,9 @@ import { getEventBySlug } from '@/services/event';
 import { getPassesByEventId } from '@/services/Pass';
 
 import { INavItemsData, subNavItems } from '@/config/navItems';
+import { PassCategory } from '@/redux/passCategory/type';
+import { getPassCategories } from '@/services/PassCategory';
+import { setPassCategories } from '@/redux/passCategory/passCategorySlice';
 
 type PageLayoutProps = {
   children: React.ReactNode;
@@ -29,50 +32,48 @@ const PageLayout = ({
   const dispatch = useAppDispatch();
   const currentPage = useAppSelector((state) => state.user.currentPage);
   const [event, setEvent] = useState<CurrentEvent>();
+  const [pass, setpass] = useState<Pass>();
 
-  const fetchEventBySlug = async (slug: string) => {
-    let tempEventdetail: CurrentEvent;
-    getEventBySlug(slug)
-      .then(async (response) => {
-        const eventData = await response.data?.event;
-
-        if (eventData) {
-          const tempEvent: Event = {
-            id: eventData.id,
-            slug: eventData.slug,
-            title: eventData.title,
-            description: eventData.description,
-            startDate: eventData.startDate,
-            endDate: eventData.endDate,
-            Files: eventData.Files,
-          };
-
-          tempEventdetail = {
-            event: tempEvent,
-            published: eventData.published,
-            hasPass: false,
-          };
-
-          setEvent(tempEventdetail);
-          dispatch(setCurrent(tempEventdetail));
-        }
-      })
-      .catch((error) => console.log('getEventBySlug Error: ', error));
-  };
-
+  // set events & currentEvent
   useEffect(() => {
     const slug = router.query.eventSlug;
 
-    console.log('PageLayout currentPage: ', currentPage);
+    const fetchEventBySlug = async (slug: string) => {
+      let tempEventdetail: CurrentEvent;
+      getEventBySlug(slug)
+        .then(async (response) => {
+          const eventData = await response.data?.event;
+
+          if (eventData) {
+            const tempEvent: Event = {
+              id: eventData.id,
+              slug: eventData.slug,
+              title: eventData.title,
+              description: eventData.description,
+              startDate: eventData.startDate,
+              endDate: eventData.endDate,
+              Files: eventData.Files,
+            };
+
+            tempEventdetail = {
+              event: tempEvent,
+              published: eventData.published,
+              hasPass: false,
+            };
+
+            setEvent(tempEventdetail);
+            dispatch(setCurrent(tempEventdetail));
+          }
+        })
+        .catch((error) => console.log('getEventBySlug Error: ', error));
+    };
 
     if (slug != undefined && typeof slug === 'string') {
-      // if (currentPage === 'Event Details' || currentPage === 'Edit Event') {
-      console.log('call fetchEventBySlug');
       fetchEventBySlug(slug);
-      // }
     }
   }, [currentPage, queryString]);
 
+  // set pass
   useEffect(() => {
     const tempEvent = event?.event;
 
@@ -96,8 +97,16 @@ const PageLayout = ({
                 contractAddress: PassData.contractAddress,
               };
 
+              setpass(Pass);
               const tempPasses: IPass = {
                 pass: Pass,
+                eventId: eventId,
+              };
+
+              dispatch(setPass(tempPasses));
+            } else {
+              const tempPasses: IPass = {
+                pass: null,
                 eventId: eventId,
               };
 
@@ -114,8 +123,46 @@ const PageLayout = ({
       const eventId = tempEvent.id;
 
       fetchPassByEventId(eventId);
+    } else {
+      const tempPasses: IPass = {
+        pass: null,
+        eventId: null,
+      };
+
+      dispatch(setPass(tempPasses));
     }
   }, [event]);
+
+  // set passCategory
+  useEffect(() => {
+    const getPassCategory = async (passId: number) => {
+      getPassCategories(passId).then((response) => {
+        const { message, data } = response;
+
+        if (data.length > 0) {
+          data.map((item: any) => {
+            const tempPassCategory: PassCategory = {
+              id: item.id,
+              title: item.title,
+              slug: item.slug,
+              tokenId: item.tokenId,
+              numberOfTokens: item.numberOfTokens,
+              price: item.price,
+            };
+
+            tempPassCategories.push(tempPassCategory);
+          });
+
+          dispatch(setPassCategories(tempPassCategories));
+        } else dispatch(setPassCategories(tempPassCategories));
+      });
+    };
+
+    const passId = pass?.id;
+    let tempPassCategories: PassCategory[] = [];
+    if (passId) getPassCategory(passId);
+    else dispatch(setPassCategories(tempPassCategories));
+  }, [pass]);
 
   const isActive = (pathName: string) => {
     if (router.pathname == pathName) {
@@ -128,7 +175,7 @@ const PageLayout = ({
 
   return (
     <>
-      <div className="sticky top-0 z-10 bg-white shadow shadow-md drop-shadow-xl">
+      <div className="sticky top-0 z-10 bg-white shadow-md drop-shadow-xl">
         <div className="section">
           <div className="flex justify-between h-12 sm:h-14">
             <Navigation

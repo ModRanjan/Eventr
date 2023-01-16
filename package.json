@@ -20,6 +20,7 @@
     "ethers": "^5.7.1",
     "formik": "^2.2.9",
     "fortmatic": "^2.4.0",
+    "ipfs-http-client": "^59.0.0",
     "next": "12.3.1",
     "next-themes": "^0.2.1",
     "react": "18.2.0",

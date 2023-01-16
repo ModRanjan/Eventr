@@ -1,14 +1,16 @@
-import { useAppSelector, useAppDispatch } from '@/redux/hooks';
+import { useRouter } from 'next/router';
 import * as fcl from '@onflow/fcl';
 import * as t from '@onflow/types';
 
-import { setWalletData } from '@/redux/action';
 import { Button } from '@/Atoms/Button';
-import { getWalletData } from '@/utils/web3';
-import { getBloctoWalletData } from '@/utils/web3/Blocto';
+
+import { getBloctoWalletData } from '@/flow/utils/Blocto';
+import { useAppDispatch } from '@/redux/hooks';
 import { addConnectedWallet } from '@/redux/wallet/walletSlice';
 import { setSessionStorage } from '@/utils/GeneralFunctions';
-import { useRouter } from 'next/router';
+
+import { signInOrSignUp } from '@/services/authentication';
+import { useEffect, useState } from 'react';
 
 type ConnectWalletProps = {
   bgColor?: string;
@@ -25,15 +27,18 @@ export const ConnectWallet = ({
   blocked,
   customClasses,
 }: ConnectWalletProps) => {
-  const dispatch = useAppDispatch();
   const router = useRouter();
+  const dispatch = useAppDispatch();
 
   const connectWallet = async () => {
     // const data = await getWalletData();
+    await fcl.authenticate();
     const data = await getBloctoWalletData();
 
     if (data) {
-      console.log(data);
+      // const address = data.connectedWallet.currentAccount;
+      // signInOrSignUp(address);
+
       // * SAVE WALLETDATA INTO REDUX
       dispatch(addConnectedWallet(data));
 
@@ -45,6 +50,7 @@ export const ConnectWallet = ({
       router.push('/Home');
     }
   };
+
   return (
     <Button
       bgColor={bgColor}

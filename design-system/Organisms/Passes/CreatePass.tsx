@@ -91,8 +91,18 @@ const CreatePasses = ({ prevPage }: createPassesProps) => {
 
           if (message === 'success') {
             const updatedPass = data.pass;
+            toast.success(`Pass Created`, {
+              position: 'bottom-right',
+              autoClose: false,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: 'light',
+              // theme: "colored",
+            });
             setShowModal(false);
-            toast.success('Pass Created');
             prevPage();
           }
         })

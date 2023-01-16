@@ -13,6 +13,7 @@ export interface UpdateEvent {
   description?: string;
   startDate: string;
   endDate: string;
+  published?: boolean;
   profile?: File;
   cover?: File;
 }

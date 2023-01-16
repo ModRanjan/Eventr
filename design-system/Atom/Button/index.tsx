@@ -16,10 +16,12 @@ type ButtonProps = {
   textProperties?: string;
   type?: 'submit' | 'reset' | 'button' | undefined; // React.ButtonHTMLAttributes<HTMLAttributes>;
   width?: string;
+  border?: string;
 };
 
 export const Button = ({
   bgColor,
+  border,
   children,
   customClasses,
   disabled,
@@ -35,7 +37,7 @@ export const Button = ({
 }: ButtonProps) => {
   const className = [
     bgColor ? bgColor : 'bg-white hover:bg-gray-300',
-    'border border-gray-300',
+    border ? border : 'border border-gray-600',
     'font-medium',
     'focus:outline-none',
     'focus:z-10',

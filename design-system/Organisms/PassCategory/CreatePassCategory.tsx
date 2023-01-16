@@ -74,7 +74,6 @@ const CreatePassCategories = ({ prevPage }: CreatePassCategoriesProps) => {
       createPassCategory(currentPassCategory)
         .then((response) => {
           const passCategoryData = response.data;
-          console.log('passCategoryData: ', passCategoryData);
           toast.success('Pass Category Created');
 
           prevPage();

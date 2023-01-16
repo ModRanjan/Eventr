@@ -1,24 +1,10 @@
 import * as fcl from '@onflow/fcl';
-import * as t from '@onflow/types';
+import '@/flow/config';
 
 import { ConnectionType, IWallet } from '@/redux/wallet/types';
 
-// ! from video
-// fcl
-//   .config()
-//   .put('accessNode.api', 'https://testnet.onflow.org')
-//   .put('discovery.wallet', 'https://flow-wallet-testnet.blocto.app/authn');
-fcl.config({
-  'accessNode.api': 'https://rest-testnet.onflow.org',
-  // Mainnet: "https://rest-mainnet.onflow.org"
-  'discovery.wallet': 'https://fcl-discovery.onflow.org/testnet/authn',
-  // Mainnet: "https://fcl-discovery.onflow.org/authn"
-});
-
 export const getBloctoWalletData = async () => {
   try {
-    await fcl.authenticate();
-
     const currentUser = await fcl.currentUser().snapshot();
 
     const account = await fcl
@@ -37,10 +23,6 @@ export const getBloctoWalletData = async () => {
       connectedWallet: currentWallet,
       connectionType: walletType,
       loggedIn: true,
-    };
-
-    const user = {
-      walletAddress: account.address,
     };
 
     return walletData;

@@ -47,7 +47,7 @@ const CreateEvents = () => {
         console.log('Event Created With Data:', data);
 
         if (message === 'success') {
-          toast.success('Event Created successful');
+          toast.success(`Event Created`);
           setShowModal(false);
           Router.push(ROUTES.home());
         }

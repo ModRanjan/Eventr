@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
 import { Label } from '@/Atoms/Label';
 import { Button } from '@/Atoms/Button';
@@ -36,6 +37,9 @@ const PassCategories = ({
     [],
   );
   const passDetails = useAppSelector((state) => state.pass);
+  const passCategories = useAppSelector(
+    (state) => state.passCategory.passCategories,
+  );
 
   useEffect(() => {
     const tempCurrentPassId = passDetails?.pass?.id;
@@ -98,13 +102,30 @@ const PassCategories = ({
     getPassCategory();
   }, [currentPassId]);
 
+  const CreatePassCategory = () => {
+    const contractType = passDetails.pass?.contractType;
+
+    if (contractType === 'ERC721') {
+      if (passCategories.length < 1) {
+        console.log('hasNoPassCategory', passCategories.length < 1);
+        createPassCategory();
+      } else {
+        toast.warning(
+          `hey, you can't create multiple tokens in 'contractType: ERC721'`,
+        );
+      }
+    } else {
+      createPassCategory();
+    }
+  };
+
   return (
     <>
       <Label className="flex items-center justify-between">
         <h3 className="section-title">Pass Tokens</h3>
 
         <Button
-          onClick={createPassCategory}
+          onClick={CreatePassCategory}
           type="button"
           bgColor="bg-black hover:bg-gray-700"
           padding="px-4 py-2"

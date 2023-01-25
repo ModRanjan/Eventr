@@ -1,22 +1,21 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { useTheme } from 'next-themes';
 
 import { Navigation } from '@/Molecules/Navigation';
 
 import { Pass } from '@/redux/pass/type';
-import { setCurrent } from '@/redux/event/eventSlice';
 import { IPass, setPass } from '@/redux/pass/passSlice';
+import { PassCategory } from '@/redux/passCategory/type';
 import { Event, CurrentEvent } from '@/redux/event/types';
 import { useAppSelector, useAppDispatch } from '@/redux/hooks';
+import { setCurrent, setCurrentPublished } from '@/redux/event/eventSlice';
+import { setPassCategories } from '@/redux/passCategory/passCategorySlice';
 
 import { getEventBySlug } from '@/services/event';
 import { getPassesByEventId } from '@/services/Pass';
+import { getPassCategories } from '@/services/PassCategory';
 
 import { INavItemsData, subNavItems } from '@/config/navItems';
-import { PassCategory } from '@/redux/passCategory/type';
-import { getPassCategories } from '@/services/PassCategory';
-import { setPassCategories } from '@/redux/passCategory/passCategorySlice';
 
 type PageLayoutProps = {
   children: React.ReactNode;
@@ -63,6 +62,7 @@ const PageLayout = ({
 
             setEvent(tempEventdetail);
             dispatch(setCurrent(tempEventdetail));
+            if (eventData.published) dispatch(setCurrentPublished(true));
           }
         })
         .catch((error) => console.log('getEventBySlug Error: ', error));

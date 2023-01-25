@@ -17,7 +17,7 @@ import { UpdateEvent } from 'types/createEvent.type';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 type DeployContractProps = {
-  handleCloseModal: () => void;
+  handleCloseModal: (txHash: string) => void;
   isModalOpen: boolean;
   modalTitle: string;
 };
@@ -28,9 +28,11 @@ export const DeployContract = ({
   modalTitle,
 }: DeployContractProps) => {
   const [txStatus, setTxStatus] = useState<string>('');
-  const [txHash, setTxHash] = useState<string>();
+  const [txHash, setTxHash] = useState<string>('');
 
   const currentEvent = useAppSelector((state) => state.event.current);
+  const passDetails = useAppSelector((state) => state.pass);
+  const passCategoryDetails = useAppSelector((state) => state.passCategory);
 
   const hendelGetNFTs = async () => {
     getNFT()
@@ -41,7 +43,20 @@ export const DeployContract = ({
   };
 
   const deployContract = async () => {
-    Mint()
+    const temppassCategories = passCategoryDetails.passCategories[0];
+    const tempCurrentEventFiles = currentEvent?.event.Files;
+
+    var name = `${passDetails.pass?.title} ${temppassCategories.title}`;
+    var price = temppassCategories.price;
+    var url: string = '';
+    if (tempCurrentEventFiles) {
+      tempCurrentEventFiles.map((item) => {
+        if (item.type === 'Cover') url = item.url;
+      });
+    }
+    var address = '0x4888621a47426aa0';
+
+    Mint(name, url, price, address)
       .then((transaction) => {
         console.log('NFTs: ', transaction);
         fcl.tx(transaction).subscribe((res: any) => {
@@ -55,7 +70,7 @@ export const DeployContract = ({
             setTxStatus('Executed...');
           } else if (res.status === 4) {
             setTxStatus('Execution Success');
-            toast.success('Event Deployed Successfull', {
+            toast.success(`Deployed Successfull ${txHash}`, {
               position: 'bottom-right',
               autoClose: false,
               hideProgressBar: false,
@@ -66,41 +81,41 @@ export const DeployContract = ({
               theme: 'light',
             });
           }
+
+          const event = currentEvent?.event;
+          if (event) {
+            const eventId = event.id;
+            const eventData: UpdateEvent = {
+              title: event.title,
+              startDate: event.startDate,
+              endDate: event.endDate,
+              published: true,
+            };
+
+            updateEvent(eventId, eventData)
+              .then((response) => {
+                const { message, data } = response;
+                if (message === 'success') {
+                  console.log('Published', data);
+                }
+              })
+              .catch((error) => {
+                console.log('updateEvent Error', error.message);
+                toast.error(error.message);
+              });
+          }
         });
       })
       .catch((error) => {
         console.log(`NFT Creation Error: `, error);
         toast.error(error.message);
       });
-
-    const event = currentEvent?.event;
-    if (event) {
-      const eventId = event.id;
-      const eventData: UpdateEvent = {
-        title: event.title,
-        startDate: event.startDate,
-        endDate: event.endDate,
-        published: true,
-      };
-
-      updateEvent(eventId, eventData)
-        .then((response) => {
-          const { message, data } = response;
-          if (message === 'success') {
-            console.log('Published', data);
-          }
-        })
-        .catch((error) => {
-          console.log('updateEvent Error', error.message);
-          toast.error(`updateEvent Error`);
-        });
-    }
   };
 
   return (
     <CustomModal
       open={isModalOpen}
-      handleCloseModal={handleCloseModal}
+      handleCloseModal={() => handleCloseModal(txHash)}
       label={modalTitle}
       width="sm:max-w-md w-full max-w-sm lg:max-w-xl"
       height="h-fit"
@@ -162,7 +177,7 @@ export const DeployContract = ({
 
       <div className="flex float-right ml-auto gap-x-4">
         <Button
-          onClick={handleCloseModal}
+          onClick={() => handleCloseModal(txHash)}
           type="button"
           padding="px-4 py-2"
           textProperties="text-sm text-gray-500 hover:text-gray-900"

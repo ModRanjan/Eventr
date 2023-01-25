@@ -26,7 +26,7 @@ export const getBloctoWalletData = async () => {
     };
 
     return walletData;
-  } catch (error) {
-    console.log('Wallet Connection Error: ', error);
+  } catch (error: any) {
+    return { error: error };
   }
 };

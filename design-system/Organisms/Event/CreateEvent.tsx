@@ -29,12 +29,13 @@ const CreateEvents = () => {
 
   const formSubmitHandler = async (
     values: FormEventValues,
-    { setSubmitting }: FormikHelpers<FormEventValues>,
+    { setSubmitting, resetForm }: FormikHelpers<FormEventValues>,
   ) => {
     const tempEvent: CreateEvent = getEventCreateValues(values);
 
     if (tempEvent) {
       setSubmitting(false);
+      resetForm();
       setEventData(tempEvent);
       setShowModal(true);
     }

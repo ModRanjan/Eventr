@@ -13,6 +13,7 @@ import { EventModal } from '@/Molecules/Modals/EventModal';
 import { FormEventValues } from '@/Molecules/Forms/EventForm/type';
 import { FieldDetails } from '@/Molecules/Forms/EventForm/FieldDetails';
 
+import { Pass } from '@/redux/pass/type';
 import { useAppSelector } from '@/redux/hooks';
 
 import { ROUTES } from '@/config/routes';
@@ -34,7 +35,11 @@ const EditEvent = ({ prevPage }: EditEventProps) => {
   const [prevEventData, setPrevEventData] = useState<FormEventValues>();
   const [updatedEventData, setUpdatedEventData] = useState<UpdateEvent>();
   const currentEvent = useAppSelector((state) => state.event.current);
-  const currentPass = useAppSelector((state) => state.pass.pass);
+  const [currentPass, setCurrentPass] = useState<Pass>();
+  const passDetails = useAppSelector((state) => state.pass);
+  const passCategories = useAppSelector(
+    (state) => state.passCategory.passCategories,
+  );
 
   useEffect(() => {
     const slug = router.query.eventSlug;
@@ -87,6 +92,13 @@ const EditEvent = ({ prevPage }: EditEventProps) => {
       setEventId(tempEventId);
     }
   }, [currentEvent]);
+
+  useEffect(() => {
+    const tempCurrentPass = passDetails.pass;
+    if (tempCurrentPass) {
+      setCurrentPass(tempCurrentPass);
+    }
+  }, [passDetails]);
 
   const formSubmitHandler = async (
     values: FormEventValues,
@@ -145,13 +157,29 @@ const EditEvent = ({ prevPage }: EditEventProps) => {
   };
 
   const HasPass = () => {
+    const CreatePassCategory = () => {
+      const contractType = passDetails.pass?.contractType;
+
+      if (contractType === 'ERC721') {
+        if (passCategories.length < 1) {
+          console.log('hasNoPassCategory', passCategories.length < 1);
+          currentEventSlug &&
+            router.push(ROUTES.passCategory.create(currentEventSlug));
+        } else {
+          toast.warning(
+            `hey, you can't create multiple tokens in 'contractType: ERC721'`,
+          );
+        }
+      } else {
+        currentEventSlug &&
+          router.push(ROUTES.passCategory.create(currentEventSlug));
+      }
+    };
+
     return (
       <>
         <Button
-          onClick={() =>
-            currentEventSlug &&
-            router.push(ROUTES.passCategory.create(currentEventSlug))
-          }
+          onClick={CreatePassCategory}
           bgColor="bg-black hover:bg-gray-700 border-transparent"
           padding="px-4 py-2"
           textProperties="text-white text-sm leading-4 text-gray-200"

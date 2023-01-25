@@ -1,12 +1,44 @@
 import axios from 'axios';
-import jwtToken from './config';
+import { toast } from 'react-toastify';
+
+const basdeUrl = process.env.NEXT_PUBLIC_AXIOSBASE_URL;
 
 const instance = axios.create({
-  baseURL: 'http://localhost:3000',
+  baseURL: basdeUrl,
   timeout: 1000,
-  headers: { Authorization: jwtToken },
 });
 
-// instance.defaults.headers.common['Authorization'] = jwtToken;
+instance.interceptors.request.use(
+  (config) => {
+    const accessToken = window.localStorage.getItem('jwtToken');
+
+    if (config.headers && accessToken) {
+      config.headers.Authorization = `Bearer ${accessToken}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  },
+);
+
+instance.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (typeof error.response !== 'undefined') {
+      if (error.message === 'Network Error') {
+        toast.error('Network error - make sure API is running');
+      } else if (error.response.data.message == 'Validation Error') {
+        let errorOb = error.response.data.data;
+        toast.error(errorOb);
+      } else {
+        toast.error(error.response.data.message);
+      }
+    } else {
+      toast.error(error.response.data.message);
+    }
+    return Promise.reject(error);
+  },
+);
 
 export default instance;

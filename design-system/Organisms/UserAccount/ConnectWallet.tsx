@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router';
+import { toast } from 'react-toastify';
 import * as fcl from '@onflow/fcl';
 import * as t from '@onflow/types';
 
@@ -10,7 +11,7 @@ import { addConnectedWallet } from '@/redux/wallet/walletSlice';
 import { setSessionStorage } from '@/utils/GeneralFunctions';
 
 import { signInOrSignUp } from '@/services/authentication';
-import { useEffect, useState } from 'react';
+import { ROUTES } from '@/config/routes';
 
 type ConnectWalletProps = {
   bgColor?: string;
@@ -31,24 +32,40 @@ export const ConnectWallet = ({
   const dispatch = useAppDispatch();
 
   const connectWallet = async () => {
-    // const data = await getWalletData();
     await fcl.authenticate();
-    const data = await getBloctoWalletData();
+    getBloctoWalletData().then((walletData) => {
+      if ('error' in walletData) {
+        // ${walletData.error}
+        toast.error(`Wallet Connection Error: `);
+      } else if ('loggedIn' in walletData) {
+        const address = '0x' + walletData.connectedWallet.currentAccount;
 
-    if (data) {
-      // const address = data.connectedWallet.currentAccount;
-      // signInOrSignUp(address);
+        signInOrSignUp(address)
+          .then((response: any) => {
+            const { message, data } = response.data;
 
-      // * SAVE WALLETDATA INTO REDUX
-      dispatch(addConnectedWallet(data));
+            if (message === 'success') {
+              const { jwtToken, user } = data;
+              console.log('jwtToken', jwtToken);
 
-      // * STORE walletData INTO SESSION
-      setSessionStorage('walletData', data);
-    }
+              // * STORE jwtToken INTO LOCALSTORAGE
+              localStorage.setItem('jwtToken', jwtToken);
 
-    if (router.pathname == '/') {
-      router.push('/Home');
-    }
+              // * SAVE WALLETDATA INTO REDUX
+              dispatch(addConnectedWallet(walletData));
+
+              // * STORE walletData INTO SESSION
+              setSessionStorage('walletData', walletData);
+              router.push(ROUTES.home());
+            } else {
+              throw new Error(message);
+            }
+          })
+          .catch((error) => {
+            toast.error(error.message);
+          });
+      }
+    });
   };
 
   return (

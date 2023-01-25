@@ -87,9 +87,9 @@ const EventDetails = () => {
     setEventProgress(tempProgressValue);
   }, [published, hasPass, hasPassCategory]);
 
-  const HandleCloseModal = () => {
+  const HandleCloseModal = (txHash: string) => {
     setShowModal(false);
-    if (published) {
+    if (published || txHash !== '') {
       router.push(ROUTES.home());
     } else
       toast.warn(`Feel free to try deploying again whenever you are ready!`);
@@ -107,18 +107,17 @@ const EventDetails = () => {
               </span>
             </h3>
 
-            {!published && hasPassCategory && (
-              <Button
-                type="button"
-                bgColor="bg-blue-100 border-0"
-                textProperties="text-blue-800 hover:text-blue-600"
-                onClick={() => setShowModal(true)}
-                padding="px-4 py-1.5 mr-2"
-                width="w-fit"
-              >
-                Deploy
-              </Button>
-            )}
+            <Button
+              type="button"
+              bgColor="bg-blue-100"
+              textProperties="text-blue-800 hover:text-blue-600"
+              onClick={() => setShowModal(true)}
+              padding="px-4 py-1.5 mr-2"
+              width="w-fit"
+              disabled={published || !hasPassCategory}
+            >
+              Deploy
+            </Button>
 
             {showModal && currentEvent && (
               <DeployContract

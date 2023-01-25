@@ -1,5 +1,5 @@
 export const ROUTES = {
-  home: () => '/',
+  home: () => '/Home',
   events: {
     create: () => `/Events/`,
     view: (eventSlug: string) => `/Events/${eventSlug}`,

@@ -40,7 +40,6 @@ export const Button = ({
     border ? border : 'border border-gray-600',
     'font-medium',
     'focus:outline-none',
-    'focus:z-10',
     'focus:ring-2 focus:ring-offset-2 focus:ring-black',
     display ? display : 'relative inline-flex items-center justify-center',
     padding ? padding : 'px-2.5 py-1.5 mx-auto',

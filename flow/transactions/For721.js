@@ -1,7 +1,9 @@
 import * as fcl from '@onflow/fcl';
-import * as t from '@onflow/types';
 
-export const Mint = async () => {
+export const Mint = async (name, url, price, address) => {
+  console.log(
+    `title: ${name}, URL: ${url}, Price: ${price}, Address: ${address}`,
+  );
   const MintNFT = `
     import Eventr from 0x60af25b344b0b6de
     import FlowToken from 0x7e60df042a9c0868 
@@ -50,13 +52,10 @@ export const Mint = async () => {
   const transaction = fcl.mutate({
     cadence: `${MintNFT}`,
     args: (arg, t) => [
-      arg('0x60af25b344b0b6de', t.Address),
-      arg(
-        'https://images.unsplash.com/photo-1507608869274-d3177c8bb4c7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80',
-        t.String,
-      ),
-      arg('firstNFT', t.String),
-      arg('10.0', t.UFix64),
+      arg(address, t.Address),
+      arg(url, t.String),
+      arg(name, t.String),
+      arg(price, t.UFix64),
     ],
     payer: fcl.authz,
     proposer: fcl.authz,

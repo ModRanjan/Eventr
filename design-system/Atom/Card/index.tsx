@@ -1,28 +1,29 @@
 import { useEffect, useState } from 'react';
+
+import { Image } from '@/Atoms/Image';
+import { Label } from '@/Atoms/Label';
+
 import { Logo } from '@/Molecules/Logo';
 
-import { Image } from '../Image';
-import { Label } from '../Label';
-
-type CardProps = {
+type CardPropsType = {
   title: string;
   slug: string;
   description?: string;
   startDate: string;
   endDate: string;
-  profileURL?: string;
-  onClick: (slug: string) => void;
+  imgURL?: string;
+  onClick: () => void;
 };
 
 export const Card = ({
-  profileURL,
+  imgURL,
   slug,
   description,
   startDate,
   endDate,
   title,
   onClick,
-}: CardProps) => {
+}: CardPropsType) => {
   const [cardDescription, setCardDescription] = useState<string | undefined>();
   const [startDateFormat, setStartDateFormat] = useState<string>();
   const [endDateFormat, setEndDateFormat] = useState<string>();
@@ -33,7 +34,7 @@ export const Card = ({
 
     setStartDateFormat(formatedStartDate);
     setEndDateFormat(formatedEndDate);
-  }, []);
+  }, [startDate, endDate]);
 
   useEffect(() => {
     let tempDesc;
@@ -48,21 +49,21 @@ export const Card = ({
   }, [description]);
 
   return (
-    <div onClick={() => onClick(slug)} className={`card group overflow-hidden`}>
+    <div onClick={onClick} className={`card group overflow-hidden`}>
       <div>
         <Image
           src={'/images/card-bg.png'}
           alt={title}
-          className={`object-cover object-center h-full opacity-25 rounded-md relative bg-gradient-to-tr from-gray-300 to-slate-300`}
+          className={`object-cover object-left w-full h-full opacity-25 rounded-md relative bg-gradient-to-tr from-gray-300 to-slate-300`}
         />
       </div>
 
       <div className="absolute w-full px-4 py-5 space-y-8">
         <div className="flex items-start h-full space-x-3">
           <div className="flex-shrink-0">
-            {profileURL ? (
+            {imgURL ? (
               <Image
-                src={profileURL}
+                src={imgURL}
                 alt={title}
                 className="w-20 h-20 rounded-md shadow-lg shadow-slate-200"
               />

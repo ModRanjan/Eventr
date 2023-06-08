@@ -3,25 +3,22 @@ import '@/flow/config';
 
 import { ConnectionType, IWallet } from '@/redux/wallet/types';
 
-export const getBloctoWalletData = async () => {
+export const getBloctoWalletData = async (userAddress: string) => {
   try {
-    const currentUser = await fcl.currentUser().snapshot();
-
-    const account = await fcl
-      .send([fcl.getAccount(currentUser.addr)])
+    const userAccount = await fcl
+      .send([fcl.getAccount(userAddress)])
       .then(fcl.decode);
 
-    const balance = account.balance / 100000000;
+    const balance = userAccount.balance / 100000000;
 
     const currentWallet: IWallet = {
-      currentAccount: account.address.toString(),
+      currentAccount: '0x' + userAccount.address.toString(),
       accountBalance: balance,
     };
-    const walletType = ConnectionType.BLOCTO;
 
     const walletData = {
       connectedWallet: currentWallet,
-      connectionType: walletType,
+      connectionType: ConnectionType.BLOCTO,
       loggedIn: true,
     };
 

@@ -1,13 +1,11 @@
-import { ImSpinner8 } from 'react-icons/im';
-export const Spinner = () => {
+import { FaSpinner } from 'react-icons/fa';
+
+export const Spinner = ({ className }: { className: string }) => {
   return (
-    <div
-      className="ml-4  spinner-border animate-spin  w-4 h-4 border-1 rounded-full"
+    <FaSpinner
+      className={className}
+      style={{ verticalAlign: 'middle' }}
       role="status"
-    >
-      <span className="visually-hidden">
-        <ImSpinner8 />
-      </span>
-    </div>
+    />
   );
 };

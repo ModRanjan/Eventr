@@ -7,12 +7,14 @@ import { Button } from '@/Atoms/Button';
 
 import { EventCard } from '@/Molecules/Cards/EventCard';
 import { CreateEventProcess } from '@/Molecules/CreateEventProcess';
-import { DeployContract } from '@/Organisms/DeploymentModals/DeployContract';
+import { DeployEvent } from '@/Molecules/Modals/DeployEvent';
 
 import { Event } from '@/redux/event/types';
 import { useAppSelector } from '@/redux/hooks';
 
 import { ROUTES } from '@/config/routes';
+import { BsPencil } from 'react-icons/bs';
+import { Icon } from '@/Atoms/Icon';
 
 const EventDetails = () => {
   const router = useRouter();
@@ -100,27 +102,31 @@ const EventDetails = () => {
       <div className="block w-full md:w-3/6">
         <div className="flex flex-col">
           <Label className="flex items-center justify-between mb-4">
-            <h3 className="section-title">
-              {event?.title}
-              <span className="block items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 w-fit">
-                {published ? 'Published' : 'Not Published'}
+            <h3 className="section-title line-clamp-1">
+              <span className="max-w-lg truncate w-[24px]" title={event?.title}>
+                {event?.title}
+              </span>
+              <span className="self-center inline-block px-3 py-1 ml-2 text-xs font-medium text-blue-800 bg-blue-100 rounded-full w-fit">
+                {published ? 'Published' : 'Draft'}
               </span>
             </h3>
 
-            <Button
-              type="button"
-              bgColor="bg-blue-100"
-              textProperties="text-blue-800 hover:text-blue-600"
-              onClick={() => setShowModal(true)}
-              padding="px-4 py-1.5 mr-2"
-              width="w-fit"
-              disabled={published || !hasPassCategory}
-            >
-              Deploy
-            </Button>
+            {!published && (
+              <Button
+                type="button"
+                bgColor="bg-blue-100"
+                textProperties="text-blue-800 hover:text-blue-600"
+                onClick={() => setShowModal(true)}
+                padding="px-4 py-1.5 mr-2"
+                width="w-fit"
+                disabled={!hasPassCategory}
+              >
+                Deploy
+              </Button>
+            )}
 
             {showModal && currentEvent && (
-              <DeployContract
+              <DeployEvent
                 modalTitle="Deploy Contract"
                 isModalOpen={showModal}
                 handleCloseModal={HandleCloseModal}
@@ -139,10 +145,16 @@ const EventDetails = () => {
                       router.push(ROUTES.events.edit(currentEventSlug))
                     }
                     display="inline-flex"
-                    padding="px-3 py-1.5 ml-auto mr-5"
+                    padding="px-4 py-2 ml-auto mr-5"
                     width="w-fit"
+                    border="border-0"
+                    bgColor=""
                   >
-                    Add description
+                    <Icon
+                      title="add description"
+                      className="w-5 h-5 hover:text-blue-600"
+                      icon={BsPencil}
+                    />
                   </Button>
                 )}
               </span>
@@ -157,32 +169,40 @@ const EventDetails = () => {
 
       <div className="relative block w-full mt-4 md:w-3/6 md:mt-0">
         <div className="flex flex-row justify-start mb-4 gap-x-4 md:justify-end">
-          {currentEvent?.hasPass ? (
-            <Button
-              type="button"
-              disabled={published}
-              onClick={() =>
-                currentEventSlug &&
-                router.push(ROUTES.passCategory.view(currentEventSlug))
-              }
-              padding="px-4 py-2"
-              width="w-fit"
-            >
-              Pass Tokens
-            </Button>
-          ) : (
-            <Button
-              type="button"
-              onClick={() =>
-                currentEventSlug &&
-                router.push(ROUTES.passes.create(currentEventSlug))
-              }
-              padding="px-4 py-2"
-              width="w-fit"
-            >
-              Create Pass
-            </Button>
-          )}
+          <Button
+            type="button"
+            display={
+              currentEvent?.hasPass || published
+                ? 'inline-flex items-center justify-center'
+                : 'hidden'
+            }
+            disabled={published}
+            onClick={() =>
+              currentEventSlug &&
+              router.push(ROUTES.passCategory.view(currentEventSlug))
+            }
+            padding="px-4 py-2"
+            width="w-fit"
+          >
+            Pass Tokens
+          </Button>
+
+          <Button
+            type="button"
+            display={
+              !currentEvent?.hasPass && !published
+                ? 'inline-flex items-center justify-center'
+                : 'hidden'
+            }
+            onClick={() =>
+              currentEventSlug &&
+              router.push(ROUTES.passes.create(currentEventSlug))
+            }
+            padding="px-4 py-2"
+            width="w-fit"
+          >
+            Create Pass
+          </Button>
 
           <Button
             type="button"

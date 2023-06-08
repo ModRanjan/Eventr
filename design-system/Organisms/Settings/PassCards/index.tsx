@@ -1,7 +1,55 @@
+import { useEffect, useState } from 'react';
+
 import { Label } from '@/Atoms/Label';
 import { PassCategoryCard } from '@/Molecules/Cards/PassCategoryCard';
 
+import getCollctionIds from '@/flow/scripts/get_collection_Ids';
+import getTokenMetadata from '@/flow/scripts/get_token_metadata';
+
+type toknDataType = {
+  categoryID: string;
+  dateOfToken: string;
+  eventID: string;
+  eventName: string;
+  numTokensInPass: string;
+  passCategoryName: string;
+  passID: string;
+  passName: string;
+  passType: string;
+};
+
 const PassCards = () => {
+  const [tokenData, setTokenData] = useState([]);
+
+  useEffect(() => {
+    const address = '0x2ccc2a8f0a17a446';
+    const getAccountTokenIDs = async () => {
+      try {
+        const transaction = await getCollctionIds(address);
+        try {
+          console.log('token IDs: ', transaction);
+          const tempTokenData: toknDataType[] = [];
+
+          if (Array.isArray(transaction)) {
+            let count = 1;
+
+            transaction.map(async (item) => {
+              const data = await getTokenMetadata(address, item);
+              console.log(data);
+              tempTokenData.push({ ...data });
+            });
+          }
+          console.log(tempTokenData);
+        } catch (error) {
+          console.log('get token metadata error', error);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getAccountTokenIDs();
+  });
   return (
     <div className="px-4 py-5 space-y-4 sm:py-6 sm:px-0">
       <Label className="sm:px-6 lg:px-8">

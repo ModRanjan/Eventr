@@ -1,7 +1,14 @@
 export const ROUTES = {
-  home: () => '/Home',
+  home: () => '/Events',
+  landingPage: () => '/',
+  overviews: {
+    events: () => `/Overviews/Events`,
+    eventDetails: (eventId: string) => `/Overviews/${eventId}/EventDeatails`,
+    eventTickets: (eventId: string) => `/Overviews/${eventId}/EventTickets`,
+    eventCheckout: (eventId: string) => `/Overviews/${eventId}/EventCheckout`,
+  },
   events: {
-    create: () => `/Events/`,
+    create: () => `/Events/create`,
     view: (eventSlug: string) => `/Events/${eventSlug}`,
     edit: (eventSlug: string) => `/Events/${eventSlug}/edit`,
   },
@@ -11,22 +18,41 @@ export const ROUTES = {
   },
   passCategory: {
     edit: (eventSlug: string) => `/Events/${eventSlug}/PassCategory/edit/`,
-    create: (eventSlug: string) => `/Events/${eventSlug}/PassCategory/`,
-    view: (eventSlug: string) => `/Events/${eventSlug}/PassCategory/view/`,
+    create: (eventSlug: string) => `/Events/${eventSlug}/PassCategory/create`,
+    view: (eventSlug: string) => `/Events/${eventSlug}/PassCategory/`,
   },
   settings: {
     profile: () => `/settings/`,
     accounts: () => `/settings/accounts`,
   },
+  deployed: {
+    view: (eventSlug: string) => `/Deployed/${eventSlug}/`,
+    events: () => `/Deployed/`,
+  },
 };
 
-// export const getTab = (path: string) => {
-//   if (['/', '/co-create', '/rewards'].includes(path)) return;
-//   if (path.includes('profile')) return;
-//   if (path.includes('milestone')) return PAGES_ID.milestones;
-//   if (path.includes('co-create') || path.includes('prompt'))
-//     return PAGES_ID.prompts;
-//   if (path.includes('members') || path.includes('prompt'))
-//     return PAGES_ID.members;
-//   return PAGES_ID.overview;
-// };
+type BreadcrumbRouteLabelsType = {
+  [key: string]: string;
+};
+
+export const RouteLabelMap: BreadcrumbRouteLabelsType = {
+  '/Events': 'Home',
+  '/Events/create': 'Create',
+  '/Events/[eventSlug]/edit': 'Edit Event',
+  '/Events/[eventSlug]': 'Details',
+  '/Events/[eventSlug]/Passes': 'Create Pass',
+  '/Events/[eventSlug]/PassCategory': 'Tokens',
+  '/Events/[eventSlug]/PassCategory/create': 'Create',
+  '/Deployed': 'Deployed Events',
+  '/Deployed/[eventId]': 'Details',
+  '/Settings': 'Settings',
+};
+
+export const UNAUTHENTICATED_ROUTES = [
+  '/Overviews/Events',
+  '/Overviews/index-1',
+  '/Overviews/index-2',
+  '/Overviews/[eventId]/EventDeatails',
+  '/Overviews/[eventId]/EventTickets',
+  '/Overviews/[eventId]/EventCheckout',
+];

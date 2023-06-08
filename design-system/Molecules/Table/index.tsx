@@ -2,13 +2,12 @@ import { useState } from 'react';
 import ReactPaginate from 'react-paginate';
 
 import { TableBody } from './TableBody';
-import { TableHead } from './TableHead';
+import { TableHead, columnsType } from './TableHead';
 
 type PropsType = {
-  columns: any;
+  columns: columnsType[];
   rows: any;
   onClickRow?: (value: any) => void;
-
   itemsPerPage: number;
 };
 
@@ -33,7 +32,7 @@ export const Table = ({
 
   return (
     <>
-      <div className={`pt-4 pb-5 mb-8 bg-indigo-100 rounded-xl `}>
+      <div className={`pt-4 pb-5 mb-8 bg-indigo-100 rounded-xl`}>
         <div className={`overflow-x-auto bg-white max-h-96 h-96`}>
           <table className="min-w-full table-auto">
             <TableHead columns={columns} />

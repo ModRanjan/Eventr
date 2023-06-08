@@ -1,17 +1,19 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { Event, CurrentEvent } from './types';
+import { Event, CurrentEvent, IDeployedEvent } from './types';
 import { IPass, setPass } from '../pass/passSlice';
 import { shallowEqual } from 'react-redux';
 
 export interface IEvent {
   events: Event[];
   current: CurrentEvent | null;
+  contractEvents: IDeployedEvent[] | undefined;
 }
 
 export const initialState: IEvent = {
   events: [],
   current: null,
+  contractEvents: undefined,
 };
 
 const eventSlice = createSlice({
@@ -37,6 +39,9 @@ const eventSlice = createSlice({
         }
       });
     },
+    setContractEvents: (state, action: PayloadAction<IDeployedEvent[]>) => {
+      state.contractEvents = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(setPass, (state, action: PayloadAction<IPass>) => {
@@ -49,7 +54,7 @@ const eventSlice = createSlice({
   },
 });
 
-export const { setCurrent, setEvents, setCurrentPublished } =
+export const { setCurrent, setEvents, setCurrentPublished, setContractEvents } =
   eventSlice.actions;
 
 export default eventSlice.reducer;

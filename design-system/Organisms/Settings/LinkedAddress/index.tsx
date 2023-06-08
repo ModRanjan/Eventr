@@ -44,9 +44,12 @@ const LinkedAddress = () => {
         </Label>
 
         <div className="flex flex-col gap-2">
-          {connectedWallets.map((item) => {
+          {connectedWallets.map((item, index) => {
             return (
-              <div className="flex items-center gap-2 py-2 border-t border-gray-300 sm:py-3 sm:px-0">
+              <div
+                key={index}
+                className="flex items-center gap-2 py-2 border-t border-gray-300 sm:py-3 sm:px-0"
+              >
                 <div className="w-10 h-10 border rounded-full border-zinc-900 bg-gradient-to-r from-sky-500 to-indigo-500" />
                 <p
                   onClick={() =>

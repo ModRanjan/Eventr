@@ -1,11 +1,13 @@
 import React from 'react';
 import { Icon } from '../Icon';
 import Link from 'next/link';
+import { IconType } from 'react-icons';
 
 type MenuItemProps = {
   active?: boolean;
   comingSoon?: boolean;
-  icon?: any;
+  leftIcon?: IconType;
+  rightIcon?: IconType;
   customClasses?: string;
   padding?: string;
   name: string;
@@ -18,17 +20,19 @@ export const MenuItem = ({
   comingSoon,
   customClasses,
   padding,
-  icon,
+  leftIcon,
+  rightIcon,
   name,
   url,
   textProperties,
 }: MenuItemProps) => {
   const className = [
-    ' border-b-2 hover:border-gray-300',
+    'border-b-2 hover:border-gray-300',
     active ? 'border-black text-black' : 'border-transparent',
     'cursor-pointer',
     comingSoon && 'text-gray-400',
-    'font-normal ',
+    'inline-block',
+    'h-full w-full',
     'inline-flex items-center gap-x-1',
     padding ? padding : 'px-1 pt-1',
     textProperties
@@ -38,10 +42,11 @@ export const MenuItem = ({
 
   return (
     <Link href={url}>
-      <li className={customClasses || className}>
-        {icon && <Icon icon={icon} className="mr-2" />}
+      <a className={customClasses || className}>
+        {leftIcon && <Icon icon={leftIcon} className="w-5 h-5 mr-1" />}
         {name}
-      </li>
+        {rightIcon && <Icon icon={rightIcon} className="w-5 h-5 ml-1" />}
+      </a>
     </Link>
   );
 };

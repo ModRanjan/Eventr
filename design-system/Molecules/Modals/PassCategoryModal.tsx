@@ -2,7 +2,6 @@ import { Button } from '@/Atoms/Button';
 import { Icon } from '@/Atoms/Icon';
 import { Label } from '@/Atoms/Label';
 import { CustomModal } from '@/Atoms/Modal/CustomModal';
-import { BiRupee } from 'react-icons/bi';
 
 import { HiOutlineXCircle } from 'react-icons/hi';
 import { CreatePassCategory, UpdatePassCategory } from 'types/passCategory';
@@ -80,7 +79,7 @@ export const PassCategoryModal = ({
             <span className="text-xs font-medium uppercase">Price</span>
 
             <span className="text-base text-gray-500">
-              <Icon icon={BiRupee} className="inline-block h-auto mr-1"></Icon>
+              FLOW
               {passCategoryData.price}
             </span>
           </div>

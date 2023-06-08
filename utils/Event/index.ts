@@ -51,6 +51,7 @@ export const getEventUpdatedValues = (
   if (values.profileURL && prevProfileURL !== values.profileURL) {
     tempEvent.profile = {
       url: values.profileURL,
+      size: 50,
       mimeType: 'image',
       extension: '.png',
     };
@@ -59,6 +60,7 @@ export const getEventUpdatedValues = (
   if (values.coverURL && values.coverURL !== prevCoverURL) {
     tempEvent.cover = {
       url: values.coverURL,
+      size: 50,
       mimeType: 'image',
       extension: '.png',
     };

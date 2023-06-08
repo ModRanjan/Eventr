@@ -22,16 +22,15 @@ import { getEventUpdatedValues } from '@/utils/Event';
 import { deleteEvent, updateEvent } from '@/services/event';
 
 type EditEventProps = {
-  prevPage: () => void;
+  reDirectToPage: (pageName: String) => void;
 };
 
-const EditEvent = ({ prevPage }: EditEventProps) => {
+const EditEvent = ({ reDirectToPage }: EditEventProps) => {
   const router = useRouter();
   const [showModal, setShowModal] = useState(false);
   const [eventId, setEventId] = useState<number>();
   const [coverURL, setCoverUrl] = useState('');
   const [profileURL, setProfileUrl] = useState('');
-  const [currentEventSlug, setCurrentEventSlug] = useState<string>();
   const [prevEventData, setPrevEventData] = useState<FormEventValues>();
   const [updatedEventData, setUpdatedEventData] = useState<UpdateEvent>();
   const currentEvent = useAppSelector((state) => state.event.current);
@@ -40,14 +39,6 @@ const EditEvent = ({ prevPage }: EditEventProps) => {
   const passCategories = useAppSelector(
     (state) => state.passCategory.passCategories,
   );
-
-  useEffect(() => {
-    const slug = router.query.eventSlug;
-
-    if (slug != undefined && typeof slug === 'string') {
-      setCurrentEventSlug(slug);
-    }
-  }, [router.query]);
 
   useEffect(() => {
     const CurrentEvent = currentEvent?.event;
@@ -63,14 +54,17 @@ const EditEvent = ({ prevPage }: EditEventProps) => {
     if (CurrentEvent?.Files?.length) {
       const Files = CurrentEvent?.Files;
       Files.map((file) => {
-        if (file.type === 'Profile') {
+        if (file.type === 'Profile' && file.url != 'null') {
           profileURL = file.url;
           setProfileUrl(profileURL);
-        } else {
+        } else if (file.type === 'Cover' && file.url != 'null') {
           coverURL = file.url;
           setCoverUrl(coverURL);
         }
       });
+    } else {
+      setProfileUrl(profileURL);
+      setCoverUrl(coverURL);
     }
 
     if (CurrentEvent) {
@@ -121,15 +115,15 @@ const EditEvent = ({ prevPage }: EditEventProps) => {
     eventId: number,
     eventData: UpdateEvent,
   ) => {
+    console.log('update eventData: ', eventData);
     updateEvent(eventId, eventData)
       .then((response) => {
         const { message, data } = response;
-        console.log('Event Updated With ', data);
 
         if (message === 'success') {
           toast.success('Event Updated successful');
           setShowModal(false);
-          prevPage();
+          reDirectToPage('EventDetailPage');
         }
       })
       .catch((error) => {
@@ -162,17 +156,14 @@ const EditEvent = ({ prevPage }: EditEventProps) => {
 
       if (contractType === 'ERC721') {
         if (passCategories.length < 1) {
-          console.log('hasNoPassCategory', passCategories.length < 1);
-          currentEventSlug &&
-            router.push(ROUTES.passCategory.create(currentEventSlug));
+          reDirectToPage('CreatePassCategoryPage');
         } else {
           toast.warning(
             `hey, you can't create multiple tokens in 'contractType: ERC721'`,
           );
         }
       } else {
-        currentEventSlug &&
-          router.push(ROUTES.passCategory.create(currentEventSlug));
+        reDirectToPage('CreatePassCategoryPage');
       }
     };
 
@@ -195,10 +186,7 @@ const EditEvent = ({ prevPage }: EditEventProps) => {
             <Button
               type="button"
               display="inline-block"
-              onClick={() =>
-                currentEventSlug &&
-                router.push(ROUTES.passes.edit(currentEventSlug))
-              }
+              onClick={() => reDirectToPage('EditPassPage')}
               padding="px-4 py-2"
               textProperties="leading-4 whitespace-nowrap text-black text-sm font-medium"
               width="w-fit h-fit"
@@ -216,10 +204,7 @@ const EditEvent = ({ prevPage }: EditEventProps) => {
                 passType={currentPass.dropType}
                 contractAddress={currentPass.contractAddress}
                 contractType={currentPass.contractType}
-                onClick={() =>
-                  currentEventSlug &&
-                  router.push(ROUTES.passes.edit(currentEventSlug))
-                }
+                onClick={() => reDirectToPage('EditPassPage')}
               />
             )}
           </div>
@@ -256,12 +241,7 @@ const EditEvent = ({ prevPage }: EditEventProps) => {
         {currentEvent?.hasPass ? (
           HasPass()
         ) : (
-          <FieldDetails
-            onClick={() =>
-              currentEventSlug &&
-              router.push(ROUTES.passes.create(currentEventSlug))
-            }
-          />
+          <FieldDetails onClick={() => reDirectToPage('CreatePassPage')} />
         )}
       </div>
     </div>

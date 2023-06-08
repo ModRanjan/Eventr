@@ -114,6 +114,7 @@ export const PassForm = ({
                     placeholder="0x0000000000000000000000000000000000000000"
                     type="input"
                     customClasses="bg-transparent placeholder-gray-300 text-xl sm:text-2xl w-full font-black focus:outline-none"
+                    disabled
                   />
                 </div>
               </div>

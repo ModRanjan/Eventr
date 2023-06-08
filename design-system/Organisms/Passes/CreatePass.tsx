@@ -23,13 +23,6 @@ const options: FormPassOptions = {
   contractType: ['ERC721', 'ERC1155'],
 };
 
-const initialValue: FormPassValues = {
-  title: '',
-  dropType: 'mint',
-  contractType: 'ERC721',
-  contractAddress: '',
-};
-
 type createPassesProps = {
   prevPage: () => void;
 };
@@ -41,7 +34,13 @@ const CreatePasses = ({ prevPage }: createPassesProps) => {
   const [passData, setPassData] = useState<CreatePass>();
   const [currentEventSlug, setCurrentEventSlug] = useState<string>();
   const currentEvent = useAppSelector((state) => state.event.current);
-
+  const userWallet = useAppSelector((state) => state.wallets.connectedWallets);
+  const initialValue: FormPassValues = {
+    title: '',
+    dropType: 'mint',
+    contractType: 'ERC721',
+    contractAddress: userWallet[0]?.currentAccount,
+  };
   useEffect(() => {
     const slug = router.query.eventSlug;
 
@@ -93,13 +92,10 @@ const CreatePasses = ({ prevPage }: createPassesProps) => {
             const updatedPass = data.pass;
             toast.success(`Pass Created`, {
               position: 'bottom-right',
-              autoClose: false,
+              autoClose: 5000,
               hideProgressBar: false,
               closeOnClick: true,
               pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: 'light',
               // theme: "colored",
             });
             setShowModal(false);
@@ -140,7 +136,7 @@ const CreatePasses = ({ prevPage }: createPassesProps) => {
             textProperties="text-white text-sm leading-4 text-gray-200"
             width="w-auto"
           >
-            Passes
+            Pass Tokens
           </Button>
           <p className="w-4/5 mt-2 text-sm font-medium font-Roboto">
             Read more about Passes

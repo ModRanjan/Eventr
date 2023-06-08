@@ -5,7 +5,7 @@ import { Label } from '@/Atoms/Label';
 import { Button } from '@/Atoms/Button';
 
 type NoRecordProps = {
-  buttonTitle: string;
+  buttonTitle?: string;
   message: string;
   onClick?: (slug?: string) => void;
 };
@@ -22,6 +22,9 @@ export const NoRecord = ({ buttonTitle, message, onClick }: NoRecordProps) => {
           <Button
             onClick={onClick}
             type="button"
+            display={
+              buttonTitle ? 'inline-flex items-center justify-center' : 'hidden'
+            }
             bgColor="bg-black hover:bg-gray-700 border-transparent"
             padding="px-4 py-2"
             textProperties="text-sm leading-4 font-medium text-white"

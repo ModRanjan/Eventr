@@ -5,9 +5,10 @@ import wallets from './wallet/walletSlice';
 import event from './event/eventSlice';
 import pass from './pass/passSlice';
 import passCategory from './passCategory/passCategorySlice';
+import processes from './processes/procesesSlice';
 
 const store = configureStore({
-  reducer: { user, wallets, event, pass, passCategory },
+  reducer: { user, wallets, event, pass, passCategory, processes },
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

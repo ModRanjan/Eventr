@@ -1,20 +1,29 @@
 import Link from 'next/link';
-import Logo from '../../Molecules/Logo';
+
+import { Logo } from '@/Molecules/Logo';
+
+const MENUS = ['About', 'Privacy Policy', ' Licensing', 'Contact'];
 
 const Footer = () => {
-  const menus = ['About', 'Privacy Policy', ' Licensing', 'Contact'];
   return (
-    <footer className="p-4 bg-white rounded-lg shadow md:px-6 md:py-8 ">
-      <div className="sm:flex sm:items-center sm:justify-between">
-        <div   className="flex items-center mb-4 sm:mb-0">
-          <Logo url="/" className={'h-8 md:h-12 mx-3'} />
-          <span className="self-center ml-2 text-xl font-semibold">Web3</span>
+    <footer className="w-full max-w-6xl mx-auto">
+      <div className="flex flex-col items-center justify-between py-4 sm:py-6 sm:flex-row gap-y-4">
+        <div className="flex items-center text-center gap-x-2">
+          <Logo
+            url="/"
+            logoSrc="/eventr.png"
+            className="block h-12 -ml-2 cursor-pointer w-14 sm:m-0"
+          />
+          <h2 className="self-center text-4xl font-semibold text-white font-OpenSans ">
+            Eventr
+          </h2>
         </div>
-        <ul className="flex flex-wrap items-center mb-6 sm:mb-0">
-          {menus.map((name, index) => (
-            <li key={index}>
+
+        <ul className="flex flex-wrap items-center gap-x-4">
+          {MENUS.map((name, index) => (
+            <li className="hover:border-b border-[#31d7a9]" key={index}>
               <Link href="#">
-                <a className="mr-4 text-sm text-gray-500 hover:underline md:mr-6 ">
+                <a className="inline-block py-2 text-sm text-white sm:text-base font-OpenSans">
                   {name}
                 </a>
               </Link>
@@ -22,18 +31,18 @@ const Footer = () => {
           ))}
         </ul>
       </div>
-      <hr className="my-6 border-gray-200 sm:mx-auto lg:my-4" />
-      <span className="block text-sm text-gray-500 sm:text-center ">
+
+      <div className="block py-6 text-base text-center text-white border-t border-gray-500 font-OpenSans">
         © 2022
         <Link
-          href="https://hodl.com"
+          href="/"
           target="_blank"
-          className="hover:underline"
+          className="ml-2 hover:underline underline-offset-2 "
         >
-          Web3™
+          {` Eventr™`}
         </Link>
         . All Rights Reserved.
-      </span>
+      </div>
     </footer>
   );
 };

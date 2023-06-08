@@ -1,19 +1,19 @@
 import { useEffect, useState } from 'react';
 import Router from 'next/router';
 
-import { Card } from '@/Atoms/Card';
 import { NoRecord } from '@/Molecules/NoRecord';
+import { SimpleEventCard } from '@/Molecules/Cards/SimpleEventCard';
 
 import { Event } from '@/redux/event/types';
 
 import { ROUTES } from '@/config/routes';
 
-type AllEvents = {
+type AllEventsType = {
   events: Event[];
   className: string;
 };
 
-export const AllEvents = ({ events, className }: AllEvents) => {
+export const AllEvents = ({ events, className }: AllEventsType) => {
   const [allEvent, setAllEvent] = useState<Event[]>([]);
 
   useEffect(() => {
@@ -37,15 +37,15 @@ export const AllEvents = ({ events, className }: AllEvents) => {
     <div className={className}>
       {allEvent.map((event: Event) => {
         return (
-          <Card
+          <SimpleEventCard
             onClick={() => Router.push(ROUTES.events.view(event.slug))}
             key={event.title + event.slug}
             slug={event.slug}
             title={event.title}
-            profileURL={event.Files && event.Files[0]?.url}
             description={event.description}
             startDate={event.startDate}
             endDate={event.endDate}
+            published={event.published}
           />
         );
       })}

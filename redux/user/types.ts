@@ -7,20 +7,30 @@ export interface IUser {
   deletedAt?: Date;
 }
 
+export interface IBreadCrumb {
+  route: string;
+  label: string;
+  link: string;
+}
+
 export enum Page {
   LandingPage = 'Eventr',
-  OverviewPage = 'Overview', // All Events
-  CreateEventPage = 'Create Event',
+  OverviewPage = 'Overview', // My Events
+  AllEventsPage = 'Events', // All Deployed Events
   SettingsPage = 'Settings',
-  EditPassPage = 'Edit Pass',
-  PassCategoryPage = 'Pass Tokens',
-  CreatePassCategoryPage = 'Create Pass-Category',
-  UpdatePassCategoryPage = 'Update Pass-Category',
 }
 
 export enum OverviewPages {
+  CreateEventPage = 'Create Event',
   EventDetailPage = 'Event Details',
   EditEventPage = 'Edit Event',
   CreatePassPage = 'Create Pass',
-  Passes = 'Passes',
+  EditPassPage = 'Edit Pass',
+  PassCategoryPage = 'Pass Tokens',
+  CreatePassCategoryPage = 'Create Pass-Category',
+  EditPassCategoryPage = 'Update Pass-Category',
+}
+
+export enum EventsPages {
+  PurchasePage = 'Buy Event Token',
 }

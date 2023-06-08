@@ -1,133 +1,53 @@
 import { useEffect, useState } from 'react';
-import { ethers } from 'ethers';
-import { setWalletData } from '@/redux/action';
-import * as fcl from '@onflow/fcl';
-import * as t from '@onflow/types';
 
-import { Button } from '@/Atoms/Button';
-import { Image } from '@/Atoms/Image';
 import { useRouter } from 'next/router';
 import { UserDetails } from './UserDetails';
 import { ConnectWallet } from './ConnectWallet';
 
-import { shallowEqual } from 'react-redux';
-import { useAppSelector, useAppDispatch } from '@/redux/hooks';
+import { useAppSelector } from '@/redux/hooks';
 import { IWallet } from '@/redux/wallet/types';
-import {
-  addConnectedWallet,
-  removeConnectedWallet,
-} from '@/redux/wallet/walletSlice';
 
-import { getSessionStorage, setSessionStorage } from '@/utils/GeneralFunctions';
+import { ROUTES } from '@/config/routes';
 
 export const UserAccount = () => {
   const router = useRouter();
-  const dispatch = useAppDispatch();
-  const [currentAccount, setCurrentAccount] = useState<IWallet>();
+  const [isConnected, setIsConnected] = useState(false);
+  const [account, setAccount] = useState<IWallet>();
 
-  const chainData = useAppSelector((state) => state.ChainData);
   const walletsData = useAppSelector((state) => state.wallets);
 
   useEffect(() => {
-    const windowSessionData = getSessionStorage('walletData');
+    const { loggedIn, connectedWallets, connectionType } = walletsData;
 
-    if (windowSessionData && windowSessionData.loggedIn) {
-      const connectedWallet = windowSessionData.connectedWallet;
-      setCurrentAccount(connectedWallet);
-      dispatch(addConnectedWallet(windowSessionData));
-
-      // fetchWalletData();
+    if (loggedIn) {
+      const firstWallet = connectedWallets[0];
+      console.log(loggedIn);
+      setAccount(firstWallet);
     }
 
-    if (!windowSessionData?.loggedIn) {
-      router.push('/');
+    setIsConnected(loggedIn);
+
+    if (loggedIn) {
+      router.push(ROUTES.landingPage());
     }
-  }, [walletsData]);
+  }, [walletsData.loggedIn]);
 
-  useEffect(() => {
-    if (typeof window.ethereum !== 'undefined') {
-      window.ethereum.on('accountsChanged', async () => {
-        await fetchWalletData();
-      });
-      window.ethereum.on('chainChanged', async () => {
-        await fetchWalletData();
-      });
-    }
-  }, []);
+  const getConnectWalletClass = isConnected
+    ? 'relative inline-flex items-center justify-center w-full text-sm font-medium text-black transition-colors duration-300 ease-in-out bg-white border border-gray-600 rounded-md shadow-sm cursor-pointer whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black px-4 py-2 leading-4 text-white transition-colors hover:bg-gray-300'
+    : 'px-3 py-2 leading-4 text-white transition-colors duration-300 ease-in-out bg-black border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black hover:bg-gray-900 whitespace-nowrap sm:text-base sm:px-6 sm:py-3';
 
-  const fetchWalletData = async () => {
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    const signer = provider.getSigner();
-    const [account] = await window.ethereum.request({
-      method: 'eth_requestAccounts',
-    });
-    let accountbalance: ethers.BigNumber = await provider.getBalance(account);
-    let balance: string = ethers.utils.formatEther(accountbalance);
-
-    const data = {
-      currentAccount: account,
-      accountBalance: balance,
-      isConnected: account && true,
-      provider: provider,
-      signer: signer,
-    };
-    window.sessionStorage.setItem(
-      'walletData',
-      JSON.stringify({
-        currentAccount: account,
-        accountBalance: balance,
-        isConnected: account && true,
-      }),
-    );
-    dispatch(setWalletData(data));
-  };
-
-  function handleDisconnect() {
-    const connectedWallets = walletsData.connectedWallets;
-
-    const perviousWalletData = connectedWallets.filter((Account: any) => {
-      const currentUserAddress = currentAccount?.currentAccount;
-
-      return shallowEqual(Account.currentAccount, currentUserAddress);
-    });
-
-    const data = {
-      connectedWallet: perviousWalletData,
-      connectionType: null,
-      loggedIn: false,
-    };
-
-    // * TO DISCONNECT BLOCTO WALLET
-    fcl.unauthenticate();
-
-    setSessionStorage('walletData', {});
-    dispatch(removeConnectedWallet(data));
-    router.push('/');
-  }
-
-  return walletsData.loggedIn && currentAccount ? (
-    <div className="flex items-center gap-x-4 sm:mr-2">
-      <UserDetails
-        accountBalance={currentAccount?.accountBalance?.toString()}
-        accountAddress={currentAccount?.currentAccount}
-        currencySymbol={chainData?.nativeCurrencySymbol || '$'}
-        etherscan={chainData?.etherscan || '-'}
-      />
-
-      <Button onClick={handleDisconnect} customClasses="cursor-pointer ml-2">
-        <img
-          className="border-2 border-gray-300 rounded-full cursor-pointer w-11 h-11 "
-          src="/images/walletAvtarLogo.png"
-          onClick={handleDisconnect}
-          title="Disconnect"
+  return (
+    <div className="flex items-center gap-x-4">
+      {isConnected && account && (
+        <UserDetails
+          accountBalance={account?.accountBalance?.toString()}
+          accountAddress={account?.currentAccount}
+          currencySymbol={'flow'}
+          etherscan={'chainData?.etherscan' || '-'}
         />
-      </Button>
+      )}
+
+      <ConnectWallet customClasses={getConnectWalletClass} />
     </div>
-  ) : (
-    <ConnectWallet
-      bgColor="bg-black hover:bg-gray-900"
-      textProperties="whitespace-nowrap text-white sm:text-base leading-4 ml-6"
-      padding="px-3 py-2 sm:px-6 sm:py-3"
-    />
   );
 };

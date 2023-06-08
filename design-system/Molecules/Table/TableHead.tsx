@@ -1,14 +1,23 @@
-export const TableHead = ({ columns }: any) => {
+export type columnsType = {
+  heading: string;
+  value: string;
+};
+
+type TableHeadProps = {
+  columns: columnsType[];
+};
+
+export const TableHead = ({ columns }: TableHeadProps) => {
   return (
-    <thead className="bg-indigo-100 ">
+    <thead className="bg-indigo-100">
       <tr>
-        {columns.map(({ heading }: any) => (
+        {columns.map((item: columnsType) => (
           <th
-            key={heading}
+            key={item.heading}
             scope="col"
-            className="px-4 py-2 text-sm font-semibold leading-4 uppercase font-Roboto whitespace-nowrap"
+            className="sticky top-0 h-10 px-4 py-2 text-sm font-semibold leading-4 uppercase bg-indigo-100 font-Roboto whitespace-nowrap"
           >
-            {heading}
+            {item.heading}
           </th>
         ))}
       </tr>

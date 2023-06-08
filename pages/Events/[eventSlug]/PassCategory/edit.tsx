@@ -5,7 +5,7 @@ import PageLayout from '@/Organisms/Layout/PageLayout';
 import { PreviousPage } from '@/Molecules/PreviousPage';
 import EditPassCategory from '@/Organisms/PassCategory/EditPassCategory';
 
-import { Page } from '@/redux/user/types';
+import { OverviewPages } from '@/redux/user/types';
 import { useAppDispatch } from '@/redux/hooks';
 import { setCurrentPage } from '@/redux/user/userSlice';
 
@@ -18,7 +18,7 @@ const index = () => {
 
   useEffect(() => {
     if (document) {
-      const currentPageTitle = Page.UpdatePassCategoryPage;
+      const currentPageTitle = OverviewPages.EditPassCategoryPage;
 
       PageTitle(currentPageTitle);
       dispatch(setCurrentPage(currentPageTitle));

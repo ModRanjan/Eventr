@@ -21,6 +21,7 @@ export const CustomModal = ({
 }: ModalProps) => {
   const ModalOverlayStyle: React.CSSProperties = {
     position: 'fixed',
+    zIndex: 50,
     top: 0,
     left: 0,
     right: 0,
@@ -49,7 +50,7 @@ export const CustomModal = ({
   return (
     <ReactModal
       isOpen={open}
-      onRequestClose={handleCloseModal}
+      // onRequestClose={handleCloseModal}
       contentLabel={label}
       style={{
         overlay: ModalOverlayStyle,

@@ -1,18 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { IUser, OverviewPages, Page } from './types';
+import { EventsPages, IUser, OverviewPages, Page } from './types';
 import {
   addConnectedWallet,
   removeConnectedWallet,
 } from '../wallet/walletSlice';
-import { FmPayloadMethod } from 'fortmatic';
 
 export interface UserState {
   user: IUser | null;
   loading: boolean;
   errors: any;
   loggedIn: boolean;
-  currentPage: Page | OverviewPages;
+  currentPage: Page | OverviewPages | EventsPages;
 }
 
 export const initialState: UserState = {
@@ -34,7 +33,10 @@ const userSlice = createSlice({
     setUser: (state, action: PayloadAction<IUser>) => {
       state.user = action.payload;
     },
-    setCurrentPage: (state, action: PayloadAction<Page | OverviewPages>) => {
+    setCurrentPage: (
+      state,
+      action: PayloadAction<Page | OverviewPages | EventsPages>,
+    ) => {
       state.currentPage = action.payload;
     },
   },

@@ -95,7 +95,7 @@ export const PassCategoryCard = ({
             padding="px-4 py-2"
             width="w-fit"
           >
-            Join Now
+            Transfer Pass-Token
           </Button>
         </div>
       </div>

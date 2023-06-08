@@ -69,18 +69,35 @@ const CreatePassCategories = ({ prevPage }: CreatePassCategoriesProps) => {
     }
   };
 
-  const createPassCategoryHandler = () => {
-    if (currentPassCategory)
-      createPassCategory(currentPassCategory)
-        .then((response) => {
-          const passCategoryData = response.data;
-          toast.success('Pass Category Created');
+  const createPassCategoryHandler = async () => {
+    if (!currentPassCategory) {
+      return;
+    }
 
-          prevPage();
-        })
-        .catch((error) =>
-          console.log('createPassCategory Error', error.message),
-        );
+    try {
+      const response = await createPassCategory(currentPassCategory);
+      const { message: responseMessage, data: responseData } = response;
+
+      if (responseMessage === 'success') {
+        const updatedPass = responseData.pass;
+
+        toast.success(`Pass Category Created`, {
+          position: 'bottom-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          // theme: "colored",
+        });
+
+        prevPage();
+      } else {
+        toast.error('Error creating Pass Category');
+      }
+    } catch (error) {
+      console.log('error: ', error);
+      toast.error('Error creating Pass Category');
+    }
   };
 
   return (

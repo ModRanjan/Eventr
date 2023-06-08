@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 
 import { PreviousPage } from '@/Molecules/PreviousPage';
@@ -16,9 +16,16 @@ import { ROUTES } from '@/config/routes';
 const index = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const [currentEventSlug, setCurrentEventSlug] = useState<string>();
   const queryString = router.query;
 
   useEffect(() => {
+    const slug = queryString.eventSlug;
+
+    if (slug != undefined && typeof slug === 'string') {
+      setCurrentEventSlug(slug);
+    }
+
     if (document) {
       const currentPageTitle = OverviewPages.EditEventPage;
 
@@ -34,11 +41,33 @@ const index = () => {
       router.push(ROUTES.events.view(slug));
   };
 
+  const reDirectToPage = (page: String) => {
+    if (currentEventSlug) {
+      switch (page) {
+        case 'EventDetailPage':
+          router.push(ROUTES.events.view(currentEventSlug));
+          break;
+        case 'CreatePassPage':
+          router.push(ROUTES.passes.create(currentEventSlug));
+          break;
+        case 'EditPassPage':
+          router.push(ROUTES.passes.edit(currentEventSlug));
+          break;
+        case 'CreatePassCategoryPage':
+          router.push(ROUTES.passCategory.create(currentEventSlug));
+          break;
+        default:
+          router.push(ROUTES.home());
+          break;
+      }
+    }
+  };
+
   return (
     <PageLayout>
       <PreviousPage onClick={prevPage} />
 
-      <EditEvent prevPage={prevPage} />
+      <EditEvent reDirectToPage={reDirectToPage} />
     </PageLayout>
   );
 };

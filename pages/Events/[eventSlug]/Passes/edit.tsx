@@ -6,7 +6,7 @@ import { PreviousPage } from '@/Molecules/PreviousPage';
 import EditPass from '@/Organisms/Passes/EditPass';
 import PageLayout from '@/Organisms/Layout/PageLayout';
 
-import { Page } from '@/redux/user/types';
+import { OverviewPages } from '@/redux/user/types';
 import { useAppDispatch } from '@/redux/hooks';
 import { setCurrentPage } from '@/redux/user/userSlice';
 
@@ -26,7 +26,7 @@ const index = () => {
     }
 
     if (document) {
-      const currentPageTitle = Page.EditPassPage;
+      const currentPageTitle = OverviewPages.EditPassPage;
 
       PageTitle(currentPageTitle);
       dispatch(setCurrentPage(currentPageTitle));
@@ -38,7 +38,8 @@ const index = () => {
   };
 
   const EventDetails = () => {
-    if (currentEventSlug) router.push(ROUTES.events.view(currentEventSlug));
+    if (currentEventSlug)
+      router.push(ROUTES.events.viewDetails(currentEventSlug));
   };
 
   return (

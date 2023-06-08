@@ -1,36 +1,63 @@
-export type INavItemsData = {
+import { IconType } from 'react-icons';
+import { FaChevronDown } from 'react-icons/fa';
+
+export interface INavItemsData {
   name: string;
-  icon?: any;
-  url: string;
-}[];
+  leftIcon?: IconType;
+  rightIcon?: IconType;
+  dropdown: boolean;
+  sublinks: {
+    name: string;
+    link: string;
+  }[];
+  link?: string;
+}
 
-export const navItems: INavItemsData = [
+export const PrimaryNavItems: INavItemsData[] = [
   {
-    name: 'Docs',
-    url: 'https://web3js.readthedocs.io/en/v1.7.5/',
-  },
-  {
-    name: 'FAQ',
-    url: '/all-users',
-  },
-
-  {
-    name: 'Discord',
-    url: '/',
-  },
-];
-
-export const subNavItems: INavItemsData = [
-  {
-    name: 'Overview',
-    url: '/Home',
+    name: 'Home',
+    dropdown: true,
+    sublinks: [
+      { name: 'Home One', link: '/Overviews/index-1' },
+      { name: 'Home Two', link: '/Overviews/index-2' },
+      { name: 'Landing Page', link: '/' },
+    ],
   },
   {
     name: 'Events',
-    url: '/Events',
+    dropdown: true,
+    sublinks: [
+      { name: 'Event', link: '/Overviews/Events' },
+      { name: 'Event Details', link: '/Overviews/23/EventDeatails' },
+      { name: 'Event Ticket', link: '/Overviews/23/EventTickets' },
+      { name: 'Event checkout', link: '/Overviews/23/EventCheckout' },
+    ],
+  },
+  {
+    name: 'Contact',
+    dropdown: false,
+    sublinks: [],
+    link: 'https://tailwindcss.com/docs/transition-duration',
+  },
+];
+
+export const subNavItems: INavItemsData[] = [
+  {
+    name: 'Overview',
+    dropdown: false,
+    sublinks: [],
+    link: '/Events',
+  },
+  {
+    name: 'Events',
+    dropdown: false,
+    sublinks: [],
+    link: '/Deployed',
   },
   {
     name: 'Settings',
-    url: '/Settings',
+    dropdown: false,
+    sublinks: [],
+    link: '/Settings',
   },
 ];

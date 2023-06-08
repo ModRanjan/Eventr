@@ -48,6 +48,115 @@ const PassCategories = ({
   }, [passDetails]);
 
   useEffect(() => {
+    const getPassCategory = async (passId: number) => {
+      try {
+        const { message, data } = await getPassCategories(passId);
+
+        if (message === 'success') {
+          const tempPassCategories: PassCategory[] = data.map(
+            ({ id, title, slug, tokenId, numberOfTokens, price }: any) => ({
+              id,
+              title,
+              slug,
+              tokenId,
+              numberOfTokens,
+              price,
+            }),
+          );
+
+          const passCategoryData: PassCategoryTableRows[] = [];
+
+          tempPassCategories.forEach(
+            (
+              { id, title, slug, tokenId, numberOfTokens, price }: PassCategory,
+              index: number,
+            ) => {
+              passCategoryData.push({
+                sNo: index + 1,
+                id,
+                title,
+                slug,
+                tokenId,
+                numberOfTokens,
+                price,
+                edit: (
+                  <Button
+                    onClick={editPassCategory}
+                    bgColor="bg-white"
+                    padding="px-4 py-1"
+                    width="w-fit"
+                  >
+                    edit
+                  </Button>
+                ),
+              });
+            },
+          );
+
+          setAllCategories(passCategoryData);
+          dispatch(setPassCategories(tempPassCategories));
+        }
+      } catch (error: any) {
+        console.log('getPassCategories Error', error.message);
+      }
+    };
+
+    if (currentPassId) getPassCategory(currentPassId);
+  }, [currentPassId]);
+
+  const CreatePassCategory = () => {
+    const contractType = passDetails.pass?.contractType;
+    const hasPassCategory = passCategories.length > 0;
+
+    if (!passDetails.pass) {
+      toast.warning(`You have no Pass, You need to create Pass first`);
+      return;
+    }
+
+    if (contractType === 'ERC721') {
+      if (!hasPassCategory) {
+        createPassCategory();
+      } else {
+        toast.warning(
+          `hey, you can't create multiple tokens in 'contractType: ERC721'`,
+        );
+      }
+    } else {
+      createPassCategory();
+    }
+  };
+
+  return (
+    <>
+      <Label className="flex items-center justify-between">
+        <h3 className="section-title">Pass Tokens</h3>
+
+        <Button
+          onClick={CreatePassCategory}
+          type="button"
+          bgColor="bg-black hover:bg-gray-700"
+          padding="px-4 py-2"
+          textProperties="text-sm text-white"
+          width="w-fit"
+        >
+          Create Pass Token
+        </Button>
+      </Label>
+
+      <div className="flex flex-col px-2 sm:px-0 ">
+        <AllPassCategory
+          createPassCategory={CreatePassCategory}
+          columns={columns}
+          allPassCategories={allCategories}
+        />
+      </div>
+    </>
+  );
+};
+
+export default PassCategories;
+/**
+  useEffect(() => {
     const getPassCategory = async () => {
       let tempPassCategories: PassCategory[] = [];
 
@@ -100,51 +209,4 @@ const PassCategories = ({
     };
 
     getPassCategory();
-  }, [currentPassId]);
-
-  const CreatePassCategory = () => {
-    const contractType = passDetails.pass?.contractType;
-
-    if (contractType === 'ERC721') {
-      if (passCategories.length < 1) {
-        console.log('hasNoPassCategory', passCategories.length < 1);
-        createPassCategory();
-      } else {
-        toast.warning(
-          `hey, you can't create multiple tokens in 'contractType: ERC721'`,
-        );
-      }
-    } else {
-      createPassCategory();
-    }
-  };
-
-  return (
-    <>
-      <Label className="flex items-center justify-between">
-        <h3 className="section-title">Pass Tokens</h3>
-
-        <Button
-          onClick={CreatePassCategory}
-          type="button"
-          bgColor="bg-black hover:bg-gray-700"
-          padding="px-4 py-2"
-          textProperties="text-sm text-white"
-          width="w-fit"
-        >
-          Create Pass Token
-        </Button>
-      </Label>
-
-      <div className="flex flex-col px-2 sm:px-0 ">
-        <AllPassCategory
-          createPassCategory={createPassCategory}
-          columns={columns}
-          allPassCategories={allCategories}
-        />
-      </div>
-    </>
-  );
-};
-
-export default PassCategories;
+  }, [currentPassId]); */

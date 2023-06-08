@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 
-import { Navigation } from '@/Molecules/Navigation';
+import { MenuNavigation, Navigation } from '@/Molecules/Navigation';
 
 import { Pass } from '@/redux/pass/type';
 import { IPass, setPass } from '@/redux/pass/passSlice';
@@ -19,7 +19,7 @@ import { INavItemsData, subNavItems } from '@/config/navItems';
 
 type PageLayoutProps = {
   children: React.ReactNode;
-  navigationList?: INavItemsData;
+  navigationList?: INavItemsData[];
 };
 
 const PageLayout = ({
@@ -167,7 +167,7 @@ const PageLayout = ({
   const isActive = (pathName: string) => {
     if (router.pathname == pathName) {
       return true;
-    } else if (router.query.eventSlug && pathName === '/Home') {
+    } else if (router.query.eventSlug && pathName === '/Events') {
       return true;
     }
     return false;
@@ -178,9 +178,9 @@ const PageLayout = ({
       <div className="sticky top-0 z-10 bg-white shadow-md drop-shadow-xl">
         <div className="section">
           <div className="flex justify-between h-12 sm:h-14">
-            <Navigation
-              textProperties="text-sm text-gray-500 hover:text-gray-700"
-              navItems={navigationList}
+            <MenuNavigation
+              className="flex text-sm text-gray-500 gap-x-6 hover:text-gray-700"
+              navigation={navigationList}
               isActive={isActive}
             />
           </div>
